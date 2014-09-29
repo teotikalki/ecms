@@ -428,8 +428,8 @@
           <description>The JBoss Cache configuration for document nodetype </description>
           <object type="org.exoplatform.services.cache.impl.jboss.ea.EAExoCacheConfig">
             <field name="name"><string>org.exoplatform.services.cms.templates.TemplateService</string></field>
-            <field name="expirationTimeout"><long>${wcm.cache.templateservice.timetolive:600000}</long></field>
-            <field name="maxNodes"><int>${wcm.cache.templateservice.capacity:300}</int></field>
+            <field name="expirationTimeout"><long>${wcm.cache.templateservice.expirationtimeout:600000}</long></field>
+            <field name="maxNodes"><int>${wcm.cache.templateservice.maxnodes:300}</int></field>
             <field name="distributed"><boolean>true</boolean></field>
           </object>
         </object-param>
