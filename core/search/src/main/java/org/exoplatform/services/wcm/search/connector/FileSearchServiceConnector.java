@@ -61,6 +61,9 @@ public class FileSearchServiceConnector extends BaseContentSearchServiceConnecto
    */
   @Override
   protected ResultNode filterNode(ResultNode node) throws RepositoryException {
+    if (node == null || node.getNode() == null || node.getNode().getPath().contains("/jcr:system/")) {
+      return null;
+    }
     return node.isNodeType(NodetypeConstant.NT_FILE) ? node : null;
   }
   
