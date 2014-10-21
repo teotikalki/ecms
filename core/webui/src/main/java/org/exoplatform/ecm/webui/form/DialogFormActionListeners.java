@@ -20,6 +20,8 @@ import javax.jcr.Node;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.pdfviewer.PDFViewerService;
+import org.exoplatform.services.wcm.utils.WCMCoreUtils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -35,6 +37,7 @@ public class DialogFormActionListeners {
   static public class RemoveDataActionListener extends EventListener<UIDialogForm> {
     public void execute(Event<UIDialogForm> event) throws Exception {
       UIDialogForm uiForm = event.getSource();
+      PDFViewerService pdfViewerService = WCMCoreUtils.getService(PDFViewerService.class);
 //      uiForm.isRemovePreference = true;
       String referenceNodePath = event.getRequestContext().getRequestParameter(UIDialogForm.OBJECTID);
       //String removedNode = event.getRequestContext().getRequestParameter('removedNode");
@@ -73,7 +76,7 @@ public class DialogFormActionListeners {
 //          uiForm.setDataRemoved(true);
         }
       }
-      
+      pdfViewerService.getCache().clearCache();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }
