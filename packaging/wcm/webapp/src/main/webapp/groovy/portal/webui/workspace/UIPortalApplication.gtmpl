@@ -22,7 +22,8 @@
   import org.exoplatform.wcm.webui.reader.ContentReader;
   import org.exoplatform.services.wcm.portal.LivePortalManagerService;
   import org.exoplatform.services.wcm.skin.WCMSkinVisitor;
-  
+  import org.exoplatform.services.security.IdentityConstants;
+
   def rcontext = _ctx.getRequestContext() ;
   String docBase =  rcontext.getRequestContextPath() ;  
   String skin = uicomponent.getSkin();
@@ -54,9 +55,11 @@
   def pcontext = (PortalRequestContext)rcontext;  
   
   UserNode currentNode = Util.getUIPortal().getSelectedUserNode();
+  if(IdentityConstants.ANONIM.equals(WCMCoreUtils.getRemoteUser())){
+    rcontext.getResponse().sendRedirect("../login");
+  }
 
-  String pageReference = currentNode.getPageRef().format();
-  
+	String pageReference = currentNode.getPageRef().format();
   def contentParam = "";
   def contentPath = "";
   ArrayList paramArray = null;
