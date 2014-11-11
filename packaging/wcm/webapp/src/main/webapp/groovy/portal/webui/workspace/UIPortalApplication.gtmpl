@@ -98,6 +98,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$lang" lang="$lang" dir="$dir">
 <!-- <![endif]-->
   <head id="head">
+  
+
+  <!--#if !(FIREFOX || MOZCENTRAL || CHROME)-->
+    <script type="text/javascript" src="/eXoWCMResources/pdf.js/compatibility.js"></script>
+  <!--#endif-->
+  
+  
     <title><%=title%></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <%
