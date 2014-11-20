@@ -168,7 +168,6 @@ public class EditDocumentActionComponent extends UIAbstractManagerComponent {
                      LockUtil.keepLock(lock, lockTokenString);
                    }
                  }
-                 selectedNode.save();
                  uiDocumentForm.setIsKeepinglock(true);
                }
              }

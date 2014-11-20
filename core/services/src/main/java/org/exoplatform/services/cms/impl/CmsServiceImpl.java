@@ -100,8 +100,6 @@ public class CmsServiceImpl implements CmsService {
     Session session = jcrService.getCurrentRepository().login(workspace);
     Node storeHomeNode = (Node) session.getItem(storePath);
     String path = storeNode(nodeTypeName, storeHomeNode, mappings, true);
-    storeHomeNode.save();
-    session.save();
     session.logout();
     return path;
   }
@@ -209,7 +207,6 @@ public class CmsServiceImpl implements CmsService {
     if (currentNode.isNodeType(ActivityCommonService.MIX_COMMENT)) {
       currentNode.setProperty(ActivityCommonService.MIX_COMMENT_ACTIVITY_ID, StringUtils.EMPTY);
     }
-
     session.save();
     return currentNode.getPath();
   }
