@@ -306,7 +306,7 @@
           <object type="org.exoplatform.webui.ext.UIExtension">
             <field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
             <field name="name"><string>OpenDocument</string></field>
-            <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManagerComponent</string></field>
+            <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent</string></field>
           </object>
         </object-param>
 
@@ -763,7 +763,7 @@
             <field name="rank"><int>1</int></field>
             <field name="name"><string>OpenDocument</string></field>
             <field name="category"><string>ItemContextMenu_SingleSelection</string></field>
-            <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManagerComponent</string></field>
+            <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent</string></field>
           </object>
         </object-param>
 
