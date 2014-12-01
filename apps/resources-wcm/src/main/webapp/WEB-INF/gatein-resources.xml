@@ -218,5 +218,29 @@
       <path>/javascript/eXo/wcm/flowplayer/flowplayer-3.2.6.min.js</path>
     </script>
   </module>
+
+  <module>
+    <name>ecm-webdav</name>
+    <as>ecm-webdav</as>
+    <script>
+      <path>/javascript/eXo/wcm/ITHitWebDAVClient.js</path>
+    </script>
+  </module>
+
+  <module>
+    <name>openDocumentInOffice</name>
+    <as>openDocumentInOffice</as>
+    <script>
+      <path>/javascript/eXo/wcm/OpenDocumentInOffice.js</path>
+    </script>
+    <depends>
+      <module>jquery</module>
+      <as>gj</as>
+    </depends>
+    <depends>
+      <module>ecm-webdav</module>
+      <as>ecmWebdav</as>
+    </depends>
+  </module>
 </gatein-resources>
 
