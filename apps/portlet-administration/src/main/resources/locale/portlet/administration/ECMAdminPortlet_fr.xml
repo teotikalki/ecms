@@ -87,7 +87,7 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-			<Reset>Réinitialiser</Reset>
+      <Reset>Reset</Reset>
 		</action>
 		<msg>
   		<name-not-allowed>Nom non autorisé</name-not-allowed>
@@ -1381,7 +1381,7 @@
     <action>
       <Close>#{word.close}</Close>
       <Save>Enregistrer</Save>
-      <Reset>Réinitialiser</Reset>
+      <Reset>Reset</Reset>
     </action>
     <msg>
       <checkbox-require>Vous devez choisir au moins une permission.</checkbox-require>
