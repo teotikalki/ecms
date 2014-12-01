@@ -87,7 +87,7 @@
 -->
   <UITaxonomyTreeMainForm>
     <action>
-      <Reset>重置</Reset>
+      <Reset>Reset</Reset>
     </action>
     <msg>
       <name-not-allowed>禁止的名稱</name-not-allowed>
@@ -712,7 +712,7 @@
     </label>
     <title>
       <AddPermission>增加權限</AddPermission>
-      <RemovePermission>刪除權限</RemovePermission>
+      <RemovePermission>Remove Permission</RemovePermission>
       <AddIcon>增加圖示</AddIcon>
       <AddPath>增加路徑</AddPath>
     </title>
@@ -1380,8 +1380,8 @@
     <title>增加權限到該節點</title>
     <action>
       <Close>#{word.close}</Close>
-      <Save>儲存</Save>
-      <Reset>重置</Reset>
+      <Save>Save</Save>
+      <Reset>Reset</Reset>
     </action>
     <msg>
       <checkbox-require>請至少選擇一個權限。</checkbox-require>
