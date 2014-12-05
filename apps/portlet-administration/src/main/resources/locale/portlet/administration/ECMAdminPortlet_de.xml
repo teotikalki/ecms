@@ -1377,7 +1377,7 @@
       <set_property>Eigenschaftsrecht festlegen</set_property>
       <remove>Recht Entfernen</remove>
     </label>
-    <title>Eine Berechtigung auf diesen Knoten hinzufügen</title>
+    <title>Add a permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>Speichern</Save>
@@ -1480,7 +1480,7 @@
       <add_node>Ändern</add_node>
       <remove>Entfernen</remove>
     </label>
-    <title>Berechtigung für diesen Knoten hinzufügen</title>
+    <title>Add permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
