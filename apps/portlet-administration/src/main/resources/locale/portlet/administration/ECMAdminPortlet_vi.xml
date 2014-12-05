@@ -1377,7 +1377,7 @@
       <set_property>Quyền Thiết lập Thuộc tính</set_property>
       <remove>Quyền Gỡ bỏ</remove>
     </label>
-    <title>Thêm phân quyền cho Nút</title>
+    <title>Add a permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>Save</Save>
@@ -1480,7 +1480,7 @@
       <add_node>Sửa đổi</add_node>
       <remove>Quyền xóa</remove>
     </label>
-    <title>Thêm quyền cho nút</title>
+    <title>Add permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
