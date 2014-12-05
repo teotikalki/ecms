@@ -1377,7 +1377,7 @@
       <set_property>Establecer el derecho de la propiedad</set_property>
       <remove>Quitar el derecho</remove>
     </label>
-    <title>Añadir un permiso a ese nodo</title>
+    <title>Add a permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>Save</Save>
@@ -1480,7 +1480,7 @@
       <add_node>Modificar</add_node>
       <remove>Quitar</remove>
     </label>
-    <title>Añadir permiso a ese nodo</title>
+    <title>Add permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
