@@ -1377,7 +1377,7 @@
       <set_property>屬性設定權利</set_property>
       <remove>刪除權利</remove>
     </label>
-    <title>增加權限到該節點</title>
+    <title>Add a permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>Save</Save>
@@ -1480,7 +1480,7 @@
       <add_node>修改</add_node>
       <remove>刪除</remove>
     </label>
-    <title>增加權限到該節點</title>
+    <title>Add permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
