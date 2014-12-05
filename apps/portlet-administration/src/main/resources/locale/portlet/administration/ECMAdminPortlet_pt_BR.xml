@@ -1377,7 +1377,7 @@
       <set_property>Permissão para alterar propriedades</set_property>
       <remove>Permissão para remoção</remove>
     </label>
-    <title>Adicionar uma permissão a este nó</title>
+    <title>Add a permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>Save</Save>
@@ -1480,7 +1480,7 @@
       <add_node>Modificar</add_node>
       <remove>Remover</remove>
     </label>
-    <title>Adicionar permissão ao nó</title>
+    <title>Add permission to this node</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
