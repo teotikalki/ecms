@@ -92,6 +92,7 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>WatchDocument</string></field>
+            <field name="rank"><int>50</int></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.WatchDocumentActionComponent</string></field>
 					</object>
 				</object-param>					
@@ -100,6 +101,7 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>ManageVersions</string></field>
+            <field name="rank"><int>70</int></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.ManageVersionsActionComponent</string></field>
 					</object>
 				</object-param>
@@ -132,6 +134,7 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>EditDocument</string></field>
+            <field name="rank"><int>210</int></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.EditDocumentActionComponent</string></field>
 					</object>
 				</object-param>					
@@ -164,6 +167,7 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>ViewMetadatas</string></field>
+            <field name="rank"><int>200</int></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.ViewMetadatasActionComponent</string></field>
 					</object>
 				</object-param>
@@ -188,6 +192,7 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>ViewPermissions</string></field>
+            <field name="rank"><int>60</int></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.ViewPermissionsActionComponent</string></field>
 					</object>
 				</object-param>
@@ -266,7 +271,8 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>Comment</string></field>
-						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.CommentActionComponent</string></field>
+            <field name="rank"><int>20</int></field>
+            <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.CommentActionComponent</string></field>
 					</object>
 				</object-param>					
 				<object-param>
@@ -274,7 +280,8 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>Vote</string></field>
-						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.VoteActionComponent</string></field>
+            <field name="rank"><int>30</int></field>
+            <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.VoteActionComponent</string></field>
 					</object>
 				</object-param>
 				<object-param>
@@ -298,6 +305,7 @@
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
 						<field name="name"><string>TaggingDocument</string></field>
+            <field name="rank"><int>40</int></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.TaggingDocumentActionComponent</string></field>
 					</object>
 				</object-param>
@@ -306,6 +314,7 @@
           <object type="org.exoplatform.webui.ext.UIExtension">
             <field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
             <field name="name"><string>OpenDocument</string></field>
+            <field name="rank"><int>10</int></field>
             <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent</string></field>
           </object>
         </object-param>
