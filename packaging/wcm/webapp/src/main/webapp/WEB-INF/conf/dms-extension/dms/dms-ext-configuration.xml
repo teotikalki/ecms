@@ -1545,6 +1545,9 @@
                                                     <string>application/ppt</string>
                                                 </value>
                                                 <value>
+                                                    <string>application/vnd.ms-powerpoint</string>
+                                                </value>
+                                                <value>
                                                     <string>application/rtf</string>
                                                 </value>
                                                 <value>
@@ -1589,6 +1592,9 @@
                                                 </value>
                                                 <value>
                                                     <string>application/xls</string>
+                                                </value>
+                                                <value>
+                                                    <string>application/vnd.ms-excel</string>
                                                 </value>
                                                 <value>
                                                     <string>application/xlt</string>
