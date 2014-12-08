@@ -548,7 +548,7 @@
 					<name>AddToFavourite</name>
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-						<field name="rank"><int>106</int></field>
+						<field name="rank"><int>150</int></field>
 						<field name="name"><string>AddToFavourite</string></field>
 						<field name="category"><string>ItemContextMenu</string></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.FavouriteManageComponent</string></field>
@@ -579,7 +579,7 @@
           <name>Copy</name>
           <object type="org.exoplatform.webui.ext.UIExtension">
             <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-            <field name="rank"><int>110</int></field>
+            <field name="rank"><int>120</int></field>
             <field name="name"><string>Copy</string></field>
             <field name="category"><string>ItemContextMenu</string></field>
             <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CopyManageComponent</string></field>
@@ -589,7 +589,7 @@
 					<name>EditDocument</name>
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-						<field name="rank"><int>120</int></field>
+						<field name="rank"><int>110</int></field>
 						<field name="name"><string>EditDocument</string></field>
 						<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.EditDocumentActionComponent</string></field>
@@ -619,7 +619,7 @@
 					<name>Lock</name>
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-						<field name="rank"><int>150</int></field>
+						<field name="rank"><int>170</int></field>
 						<field name="name"><string>Lock</string></field>
 						<field name="category"><string>ItemContextMenu</string></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.LockManageComponent</string></field>
@@ -639,7 +639,7 @@
 					<name>CheckIn</name>
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-						<field name="rank"><int>170</int></field>
+						<field name="rank"><int>190</int></field>
 						<field name="name"><string>CheckIn</string></field>
 						<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CheckInManageComponent</string></field>
@@ -659,7 +659,7 @@
 					<name>Rename</name>
 					<object type="org.exoplatform.webui.ext.UIExtension">
 						<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-						<field name="rank"><int>190</int></field>
+						<field name="rank"><int>160</int></field>
 						<field name="name"><string>Rename</string></field>
 						<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
 						<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.RenameManageComponent</string></field>
