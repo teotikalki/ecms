@@ -231,7 +231,7 @@
     <name>openDocumentInOffice</name>
     <as>openDocumentInOffice</as>
     <script>
-      <path>/javascript/eXo/wcm/OpenDocumentInOffice.js</path>
+      <path>/javascript/eXo/wcm/frontoffice/public/OpenDocumentInOffice.js</path>
     </script>
     <depends>
       <module>jquery</module>
