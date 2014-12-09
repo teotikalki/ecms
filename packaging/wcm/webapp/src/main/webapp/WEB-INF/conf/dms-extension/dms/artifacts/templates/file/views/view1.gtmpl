@@ -100,7 +100,9 @@
               <div class="detailContainer">
                 <h4><%=_ctx.appRes("File.view.label.not-viewable")%></h4>
                 <a class="btn btn-primary" href="$downloadLink"><%=_ctx.appRes("File.view.label.download")%></a>
-                <a class="btn actionIcon openDocument" href="#" onclick="eXo.ecm.OpenDocumentInOffice.openDocument_doClick()">...</a>
+                <a class="btn actionIcon" href="#" onclick="eXo.ecm.OpenDocumentInOffice.openDocument_doClick();">
+                  <span class="uiIconEcmsOpenDocument" >Open...</span>
+                </a>
 							</div>
             </div>
           <%}%>
