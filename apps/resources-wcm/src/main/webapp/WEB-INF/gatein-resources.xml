@@ -226,9 +226,13 @@
       <path>/javascript/eXo/wcm/frontoffice/public/OpenDocumentInOffice.js</path>
     </script>
     <depends>
+      <module>bts_modal</module>
+    </depends>
+    <depends>
       <module>jquery</module>
       <as>gj</as>
     </depends>
   </module>
+
 </gatein-resources>
 
