@@ -87,7 +87,7 @@
 -->
   <UITaxonomyTreeMainForm>
     <action>
-      <Reset>Reset</Reset>
+      <Reset>أعاد التشغيل</Reset>
     </action>
     <msg>
       <name-not-allowed>اسم محظور</name-not-allowed>
