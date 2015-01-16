@@ -30,6 +30,7 @@
         <comment-by>コメント</comment-by>
         <email>メール</email>
         <site>サイト</site>
+        <lastComment>Last comment posted by {user} at {time}</lastComment>
       </label>
     </view>
   </Comment>
