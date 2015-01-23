@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.viewer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -352,5 +353,17 @@ public class PDFViewer extends UIForm {
       }
     }
     return currentNode ;
+  }
+  
+  public String getActionOpenDocInDesktop() {
+    UIComponent uiParent = getParent();
+    String ret = "";
+    try {
+      Method method = getMethod(uiParent, "getActionOpenDocInDesktop");
+      if(method != null) ret = (String) method.invoke(uiParent, (Object[]) null);
+    } catch (NoSuchMethodException| IllegalArgumentException| IllegalAccessException| InvocationTargetException e) {
+      ret = "";
+    }
+    return ret;
   }
 }
