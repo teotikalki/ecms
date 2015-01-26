@@ -136,17 +136,16 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     return FILTERS;
   }
 
-  private void processRemoveMultiple(String[] nodePaths, Event<?> event) throws Exception {
-    Map<String, Node> mapNode = new HashMap<String, Node>();
+  private String processRemoveMultiple(String[] nodePaths, Event<?> event) throws Exception {
+     StringBuilder trashId = new StringBuilder();
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
-    for (int i = 0; i < nodePaths.length; i++) {
+    java.util.Arrays.sort(nodePaths,java.util.Collections.reverseOrder());
+    for (int i = 0; i < nodePaths.length ; i++) {
       try {
         Node node = this.getNodeByPath(nodePaths[i]);
-
-        // Prepare to remove
         Validate.isTrue(node != null, "The ObjectId is invalid '" + nodePaths[i] + "'");
-        mapNode.put(node.getPath(), node);
+        trashId.append(processRemoveOrMoveToTrash(nodePaths[i], node, event, true, true)).append(";");
       } catch (PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -155,12 +154,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       }
     }
 
-    String path = null;
-    Iterator<String> iterator = mapNode.keySet().iterator();
-    while (iterator.hasNext()) {
-      path = iterator.next();
-      processRemoveOrMoveToTrash(path, mapNode.get(path), event, true, true);
-    }
+    return trashId.substring(0,trashId.length() - 1);
   }
 
   private void removeAuditForNode(Node node) throws Exception {
@@ -510,9 +504,9 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     ResourceBundle res = context.getApplicationResourceBundle();
     String deleteNotice = "";
     String deleteNoticeParam = "";
-    String trashId="";
+    String trashId = "";
     if (nodePath.indexOf(";") > -1) {
-      processRemoveMultiple(Utils.removeChildNodes(nodePath), event);
+      trashId = processRemoveMultiple(Utils.removeChildNodes(nodePath), event);
       if(checkToMoveToTrash) deleteNotice = "UIWorkingArea.msg.feedback-delete-multi";
       else deleteNotice = "UIWorkingArea.msg.feedback-delete-permanently-multi";
       deleteNoticeParam = String.valueOf(nodePath.split(";").length);
