@@ -77,7 +77,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService, Startable {
 
   private InitParams          params_;
 
-  private static final String OPEN_DESKTOP_PROVIDER_REGEX="^remote-edit\\.([a-z]+)$";
+  private static final String OPEN_DESKTOP_PROVIDER_REGEX="^exo.remote-edit\\.([a-z]+)$";
   private static final String OPEN_PROVIDER_RESOURCEBUNDLE_SUFFIX = ".label";
   private static final String OPEN_PROVIDER_STYLE_SUFFIX = ".ico";
   private final String OPEN_DOCUMENT_ON_DESKTOP_ICO = "uiIcon16x16FileDefault";
@@ -326,6 +326,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService, Startable {
         documentTypeResult = documentType;
       }
     }
+
     if(documentTypeResult==null)
       documentTypeResult= new DocumentType(Arrays.asList(new String[] {mimeType}),
               OPEN_DOCUMENT_IN_DESKTOP_RESOURCE_KEY, OPEN_DOCUMENT_ON_DESKTOP_ICO);
