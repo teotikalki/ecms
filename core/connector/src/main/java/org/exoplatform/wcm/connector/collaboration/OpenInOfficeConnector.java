@@ -49,6 +49,8 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
                                            ",pot,pps,ppa,pptx,potx,ppsx,ppam,pptm,potm,ppsm,";
   private NodeFinder nodeFinder;
   private LinkManager linkManager;
+  private ResourceBundleService resourceBundleService;
+  private DocumentTypeService documentTypeService;
 
   private void init(){
     String _msofficeMimeType = System.getProperty(MSOFFICE_MIMETYPE);
@@ -57,9 +59,14 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
     }
   }
 
-  public OpenInOfficeConnector(NodeFinder nodeFinder, LinkManager linkManager){
+  public OpenInOfficeConnector(NodeFinder nodeFinder,
+                               LinkManager linkManager,
+                               ResourceBundleService resourceBundleService,
+                               DocumentTypeService documentTypeService){
     this.nodeFinder = nodeFinder;
     this.linkManager = linkManager;
+    this.resourceBundleService = resourceBundleService;
+    this.documentTypeService = documentTypeService;
   }
   /**
    * Return a JsonObject's current file to update display titles
@@ -87,8 +94,6 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
     if(builder!=null) return builder.build();
 
     //query form configuration values params
-    ResourceBundleService resourceBundleService = WCMCoreUtils.getService(ResourceBundleService.class);
-    DocumentTypeService documentTypeService = WCMCoreUtils.getService(DocumentTypeService.class);
 
     CacheControl cc = new CacheControl();
     cc.setMaxAge(CACHED_TIME);
@@ -124,6 +129,25 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
     builder.tag(etag);
     builder.cacheControl(cc);
     return builder.build();
+  }
+
+  public String[] getDocumentInfos(String filePath){
+    String title = OPEN_DOCUMENT_IN_DESKTOP_RESOURCE_KEY;
+    String icon = OPEN_DOCUMENT_ON_DESKTOP_ICO;
+
+    String _extension = null;
+    if(StringUtils.isNotEmpty(filePath)){
+      _extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
+      if(_extension.contains("[")) _extension=_extension.substring(0, _extension.indexOf("["));
+    }
+
+    DocumentType documentType = documentTypeService.getDocumentType(_extension);
+
+    if(documentType !=null){
+      if(!StringUtils.isEmpty(documentType.getResourceBundleKey())) title=documentType.getResourceBundleKey();
+      if(!StringUtils.isEmpty(documentType.getIconClass())) icon=documentType.getIconClass();
+    }
+    return new String[]{title, icon};
   }
 
   /**

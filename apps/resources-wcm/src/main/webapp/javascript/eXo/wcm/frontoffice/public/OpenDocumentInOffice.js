@@ -69,7 +69,7 @@
           if (!data.isFile) return;
           var elClass = "uiIconEcmsOpenDocument";
           var isRightClick="";
-          if(activityId != null && activityId != "undefined" && activityId != "") elClass +="_"+activityId;
+
           if(rightClick) isRightClick="#ECMContextMenu";
           var openDocument = gj(isRightClick+" ."+elClass).parent();
           var html = "<i class=\"uiIcon16x16FileDefault uiIcon16x16nt_file "+data.ico+" "+elClass+"\"></i>\n"+data.title;
