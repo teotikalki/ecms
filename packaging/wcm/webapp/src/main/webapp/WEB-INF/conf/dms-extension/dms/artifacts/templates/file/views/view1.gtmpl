@@ -99,8 +99,8 @@
               </div>
               <div class="detailContainer">
                 <h4><%=_ctx.appRes("File.view.label.not-viewable")%></h4>
-                <a class="btn btn-primary" href="$downloadLink"><%=_ctx.appRes("File.view.label.download")%></a>
-                <a class="btn actionIcon" href="#" onclick="<%=uicomponent.getActionOpenDocInDesktop()%>">
+                <a class="btn btn-primary" href="$downloadLink"><%=_ctx.appRes("File.view.label.download")%></a>&nbsp;&nbsp;
+                <a class="btn" href="#" onclick="<%=uicomponent.getActionOpenDocInDesktop()%>">
                   <i class="uiIcon16x16FileDefault uiIcon16x16nt_file uiIconEcmsOpenDocument"></i>
                   <%=_ctx.appRes("File.view.label.using-webDAV")%>
                 </a>
