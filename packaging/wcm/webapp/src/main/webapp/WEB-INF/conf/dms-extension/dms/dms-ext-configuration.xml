@@ -329,10 +329,11 @@
 				</object-param>
         <object-param>
           <name>OpenDocument</name>
-          <object type="org.exoplatform.webui.ext.UIExtension">
+          <object type="org.exoplatform.ecm.webui.core.UIECMExtension">
             <field name="type"><string>org.exoplatform.ecm.dms.UIActionBar</string></field>
             <field name="name"><string>OpenDocument</string></field>
             <field name="rank"><int>10</int></field>
+            <field name="view"><string>${remote-edit.view:List,Icons}</string></field>
             <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent</string></field>
           </object>
         </object-param>
@@ -785,10 +786,11 @@
 
         <object-param>
           <name>OpenDocument</name>
-          <object type="org.exoplatform.webui.ext.UIExtension">
+          <object type="org.exoplatform.ecm.webui.core.UIECMExtension">
             <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
             <field name="rank"><int>90</int></field>
             <field name="name"><string>OpenDocument</string></field>
+            <field name="view"><string>${remote-edit.view:List,Icons}</string></field>
             <field name="category"><string>ItemContextMenu_SingleSelection</string></field>
             <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent</string></field>
           </object>
