@@ -32,6 +32,9 @@ import org.exoplatform.ecm.webui.tree.UITreeTaxonomyBuilder;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.AccessControlEntry;
+import org.exoplatform.services.jcr.access.AccessControlList;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
@@ -115,7 +118,11 @@ public class UITreeTaxonomyList extends UIForm {
     List<Node> listNode = taxonomyService.getAllTaxonomyTrees();
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
-      taxonomyTree.add(new SelectItemOption<String>(getTaxonomyLabel(itemNode.getName()), itemNode.getName()));
+      AccessControlList acl = ((ExtendedNode)itemNode).getACL();
+      List<String> pers = new ArrayList<String>();
+      for(AccessControlEntry entry : acl.getPermissionEntries()) pers.add(entry.getIdentity() + " " + entry.getPermission());
+      if((WCMCoreUtils.hasPermission(WCMCoreUtils.getRemoteUser(), pers, false)))
+        taxonomyTree.add(new SelectItemOption<String>(getTaxonomyLabel(itemNode.getName()), itemNode.getName()));
     }
     UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
     uiTreeTaxonomyList.setOptions(taxonomyTree);
