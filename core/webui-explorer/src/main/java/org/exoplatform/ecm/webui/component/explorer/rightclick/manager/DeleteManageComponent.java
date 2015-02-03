@@ -19,11 +19,9 @@ package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -140,7 +138,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
      StringBuilder trashId = new StringBuilder();
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
-    java.util.Arrays.sort(nodePaths,java.util.Collections.reverseOrder());
+    Arrays.sort(nodePaths,Collections.reverseOrder());
     for (int i = 0; i < nodePaths.length ; i++) {
       try {
         Node node = this.getNodeByPath(nodePaths[i]);
