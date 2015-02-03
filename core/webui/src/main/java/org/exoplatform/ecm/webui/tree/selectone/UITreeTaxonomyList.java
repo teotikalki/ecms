@@ -118,11 +118,7 @@ public class UITreeTaxonomyList extends UIForm {
     List<Node> listNode = taxonomyService.getAllTaxonomyTrees();
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
-      AccessControlList acl = ((ExtendedNode)itemNode).getACL();
-      List<String> pers = new ArrayList<String>();
-      for(AccessControlEntry entry : acl.getPermissionEntries()) pers.add(entry.getIdentity() + " " + entry.getPermission());
-      if((WCMCoreUtils.hasPermission(WCMCoreUtils.getRemoteUser(), pers, false)))
-        taxonomyTree.add(new SelectItemOption<String>(getTaxonomyLabel(itemNode.getName()), itemNode.getName()));
+      taxonomyTree.add(new SelectItemOption<String>(getTaxonomyLabel(itemNode.getName()), itemNode.getName()));
     }
     UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
     uiTreeTaxonomyList.setOptions(taxonomyTree);
