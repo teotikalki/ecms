@@ -37,7 +37,7 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
 
   private final String OPEN_DOCUMENT_ON_DESKTOP_ICO              = "uiIcon16x16FileDefault";
   private final String CONNECTOR_BUNDLE_LOCATION                 = "locale.wcm.resources.WCMResourceBundleConnector";
-  private final String OPEN_DOCUMENT_IN_DESKTOP_RESOURCE_KEY     = "OpenInOfficeConnector.label.exo.remote-edit.desktop";
+  private final String OPEN_DOCUMENT_ON_DESKTOP_RESOURCE_KEY = "OpenInOfficeConnector.label.exo.remote-edit.desktop";
   private final String OPEN_DOCUMENT_IN_DESKTOP_APP_RESOURCE_KEY = "OpenInOfficeConnector.label.exo.remote-edit.desktop-app";
   private final String OPEN_DOCUMENT_DEFAULT_TITLE               = "Open on Desktop";
   private static final String MSOFFICE_MIMETYPE                  = "ms-office-mimetype";
@@ -99,7 +99,7 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
     cc.setMaxAge(CACHED_TIME);
 
     ResourceBundle resourceBundle = resourceBundleService.getResourceBundle(CONNECTOR_BUNDLE_LOCATION, new Locale(language));
-    String title = resourceBundle!=null?resourceBundle.getString(OPEN_DOCUMENT_IN_DESKTOP_RESOURCE_KEY):OPEN_DOCUMENT_DEFAULT_TITLE;
+    String title = resourceBundle!=null?resourceBundle.getString(OPEN_DOCUMENT_ON_DESKTOP_RESOURCE_KEY):OPEN_DOCUMENT_DEFAULT_TITLE;
     String ico = OPEN_DOCUMENT_ON_DESKTOP_ICO;
 
     DocumentType documentType = documentTypeService.getDocumentType(extension);
@@ -131,18 +131,22 @@ public class OpenInOfficeConnector implements ResourceContainer, Startable {
     return builder.build();
   }
 
-  public String[] getDocumentInfos(String filePath){
-    String title = OPEN_DOCUMENT_IN_DESKTOP_RESOURCE_KEY;
+  /**
+   * Get Title, css class of document by document's name
+   * @param fileName
+   * @return
+   */
+  public String[] getDocumentInfos(String fileName){
+    String title = OPEN_DOCUMENT_ON_DESKTOP_RESOURCE_KEY;
     String icon = OPEN_DOCUMENT_ON_DESKTOP_ICO;
 
-    String _extension = null;
-    if(StringUtils.isNotEmpty(filePath)){
-      _extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
-      if(_extension.contains("[")) _extension=_extension.substring(0, _extension.indexOf("["));
+    String _extension = "";
+    if(fileName.lastIndexOf(".") > 0 ) {
+      _extension = StringUtils.substring(fileName, fileName.lastIndexOf(".") + 1, fileName.length());
     }
+    if(StringUtils.isBlank(_extension)) return new String[]{title, icon};
 
     DocumentType documentType = documentTypeService.getDocumentType(_extension);
-
     if(documentType !=null){
       if(!StringUtils.isEmpty(documentType.getResourceBundleKey())) title=documentType.getResourceBundleKey();
       if(!StringUtils.isEmpty(documentType.getIconClass())) icon=documentType.getIconClass();

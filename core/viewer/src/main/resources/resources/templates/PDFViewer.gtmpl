@@ -7,7 +7,6 @@
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.services.jcr.RepositoryService;   
   import org.exoplatform.wcm.webui.reader.ContentReader;
-  import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent;
   import org.exoplatform.services.wcm.utils.WCMCoreUtils;
   import org.exoplatform.wcm.connector.collaboration.OpenInOfficeConnector;
 	
@@ -162,7 +161,7 @@ if (uiParent != null) {
   rqcontext.getJavascriptManager().require("SHARED/ecm-utils", "ecmutil").
   addScripts('ecmutil.ECMUtils.onKeyPDFViewerPress();') ;	
   def openInOfficeConnector = WCMCoreUtils.getService(OpenInOfficeConnector.class);
-  def _documentInfos = openInOfficeConnector.getDocumentInfos(originalNode.getPath());
+  def _documentInfos = openInOfficeConnector.getDocumentInfos(originalNode.getName());
   def remoteEditClass=_documentInfos[1];
   def remoteEditTitle=_ctx.appRes(_documentInfos[0]);
   if (maximumPage > 0 && maximumPage < 100) {

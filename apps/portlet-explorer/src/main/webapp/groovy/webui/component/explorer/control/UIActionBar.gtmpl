@@ -16,7 +16,6 @@
   import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
   import org.apache.commons.lang.StringUtils;
   import org.exoplatform.ecm.webui.component.explorer.control.action.UploadActionComponent;
-  import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent;
   import org.exoplatform.services.wcm.utils.WCMCoreUtils;
   import org.exoplatform.wcm.connector.collaboration.OpenInOfficeConnector;
 
@@ -29,7 +28,7 @@
 	def currentNode = uiExplorer.getCurrentNode();
 	def currentNodePath = currentNode.getSession().getWorkspace().getName()+":"+currentNode.getPath();
   def openInOfficeConnector = WCMCoreUtils.getService(OpenInOfficeConnector.class);
-  def _documentInfos = openInOfficeConnector.getDocumentInfos(currentNode.getPath());
+  def _documentInfos = openInOfficeConnector.getDocumentInfos(currentNode.getName());
   def remoteEditClass=_documentInfos[1];
   def remoteEditTitle=_ctx.appRes(_documentInfos[0]);
 
