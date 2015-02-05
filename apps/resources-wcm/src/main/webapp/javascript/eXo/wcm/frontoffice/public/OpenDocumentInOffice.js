@@ -18,7 +18,8 @@
   var restPrefix = portal+"/"+rest;
 
   var OpenDocumentInOffice = function() {}
-
+  var resizeBarHeight=0;
+  var rightContainerWidth=0;
   /**
    * Open document by Office application or desktop apps
    * absolutePath is webdav path of document. webdav server have to support level 2
@@ -26,6 +27,7 @@
    * filePath node path
    */
   OpenDocumentInOffice.prototype.openDocument = function(absolutePath, workspace, filePath){
+    fitLayout();
     if(eXo.ecm.ECMWebDav !== undefined) { // use ITHIT to an open document
       eXo.ecm.ECMWebDav.WebDAV.Client.DocManager.ShowMicrosoftOfficeWarning();
       var documentManager = eXo.ecm.ECMWebDav.WebDAV.Client.DocManager;
@@ -48,6 +50,8 @@
         console.log("Cannot open. MSOffice version is not support!");
       }
     }
+    gj("#UISideBar").show();
+    gj("#UIViewBarContainer").show();
   }
 
   /**
@@ -93,6 +97,8 @@
             defaultEnviromentFilter(openDocument);//only show with support enviroment.
           }
         });
+        resizeBarHeight = gj(".resizeBar").attr("style");
+        rightContainerWidth = gj("#UIWorkingArea").width();
   }
 
 
@@ -121,6 +127,30 @@
     gj("#uiActionsBarContainer .uiIconEcmsOpenDocument").parent().click();
   }
 
+  function fitLayout(){
+    if (navigator.appVersion.indexOf("Mac") === -1) return;	  
+    var sideBarWidth = gj("#UISideBar").width();
+    var resizeBarContentWidth = gj(".resizeBar").width();
+
+        if(sideBarWidth >0 && resizeBarHeight !== undefined) {
+           rightContainerWidth = "width: "+eval(rightContainerWidth - sideBarWidth - resizeBarContentWidth)+"px;";	
+           gj(".rightContainer").attr("style", rightContainerWidth);
+	   gj(".resizeBar").attr("style", resizeBarHeight);
+           gj(".resizeBarContent").attr("style", resizeBarHeight);
+	}else{			
+          if(resizeBarHeight !== undefined && resizeBarHeight !== null ){
+          gj(".resizeBar").attr("style", resizeBarHeight);
+          gj(".resizeBarContent").attr("style", resizeBarHeight);
+
+          rightContainerWidth = "width: "+eval(rightContainerWidth - sideBarWidth - resizeBarContentWidth)+"px;";
+          }else{
+            gj("#UISideBar").hide();
+          }
+          gj(".rightContainer").attr("style", "width: "+rightContainerWidth+"px;");
+    }
+    gj("#UIViewBarContainer").hide();    
+  }
+	
   /**
    *To filter OpenXXX button only working with support enviroments
    * -IE 11 or least version,
