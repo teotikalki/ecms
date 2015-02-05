@@ -113,10 +113,6 @@
     }
   }
 
-  OpenDocumentInOffice.prototype.openDocument_doClick = function(){
-    gj("#uiActionsBarContainer .uiIconEcmsOpenDocument").parent().click();
-  }
-
   /**
    *To filter OpenXXX button only working with support enviroments
    * -IE 11 or least version,
@@ -140,7 +136,10 @@
       if(checkMSOfficeVersion() && isAtLeastIE11) return true;
 
       // Hide if not enought enviroments support
-      gj(element).parent().attr("style", "display:none;");
+      if(gj(element).parent().hasClass("detailContainer"))
+        gj(element).attr("style", "display:none;");
+      else
+        gj(element).parent().attr("style", "display:none;");
       return false;
     }else{
       //other browser, hide this functional

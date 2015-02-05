@@ -16,6 +16,7 @@
   import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
   import org.apache.commons.lang.StringUtils;
   import org.exoplatform.ecm.webui.component.explorer.control.action.UploadActionComponent;
+  import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.OpenDocumentManageComponent;
   import org.exoplatform.services.wcm.utils.WCMCoreUtils;
   import org.exoplatform.wcm.connector.collaboration.OpenInOfficeConnector;
 
@@ -34,7 +35,10 @@
 
   def jsManager = rcontext.getJavascriptManager();
   jsManager.require("SHARED/ecm-utils", "ecmutil").require("SHARED/multiUpload", "multiUpload")
+	.require("SHARED/openDocumentInOffice", "openDocumentInOffice")
   .addScripts('multiUpload.displayCorrectUploadButton();')
+	.addScripts("eXo.ecm.OpenDocumentInOffice.updateLabel('"+currentNodePath+"');");
+
   def showUploadInput = false;
   
   def tabs = uicomponent.getTabList() ;
