@@ -116,12 +116,11 @@ public class PDFViewer extends UIForm {
     if(method != null) originalNode = (Node) method.invoke(uiParent, (Object[]) null);
 
     if(originalNode != null) {
-      Document document = getDocument(originalNode);
-      if (document != null) {
-        maximumOfPage_ = document.getNumberOfPages();
-        metadatas.clear();
-        putDocumentInfo(document.getInfo());
-        document.dispose();
+      PDFViewerService pdfViewerService = WCMCoreUtils.getService(PDFViewerService.class);
+      PDFViewerService.PDFInfo pdfInfo = pdfViewerService.getPDFInfo(originalNode);
+      if (pdfInfo != null) {
+        maximumOfPage_ = pdfInfo.getMaxPages();
+        metadatas = pdfInfo.getMetaDatas();
       } else maximumOfPage_ = -1;
     }
   }
@@ -163,35 +162,6 @@ public class PDFViewer extends UIForm {
     PDFViewerService pdfViewerService = getApplicationComponent(PDFViewerService.class);
     String repository = (String) getMethod(this.getParent(), "getRepository").invoke(this.getParent(), (Object[]) null);
     return pdfViewerService.initDocument(node, repository);
-  }
-
-  private void putDocumentInfo(PInfo documentInfo) {
-    if (documentInfo != null) {
-      if(documentInfo.getTitle() != null && documentInfo.getTitle().length() > 0) {
-        metadatas.put("title", documentInfo.getTitle());
-      }
-      if(documentInfo.getAuthor() != null && documentInfo.getAuthor().length() > 0) {
-        metadatas.put("author", documentInfo.getAuthor());
-      }
-      if(documentInfo.getSubject() != null && documentInfo.getSubject().length() > 0) {
-        metadatas.put("subject", documentInfo.getSubject());
-      }
-      if(documentInfo.getKeywords() != null && documentInfo.getKeywords().length() > 0) {
-        metadatas.put("keyWords", documentInfo.getKeywords());
-      }
-      if(documentInfo.getCreator() != null && documentInfo.getCreator().length() > 0) {
-        metadatas.put("creator", documentInfo.getCreator());
-      }
-      if(documentInfo.getProducer() != null && documentInfo.getProducer().length() > 0) {
-        metadatas.put("producer", documentInfo.getProducer());
-      }
-      if(documentInfo.getCreationDate() != null) {
-        metadatas.put("creationDate", documentInfo.getCreationDate().toString());
-      }
-      if(documentInfo.getModDate() != null) {
-        metadatas.put("modDate", documentInfo.getModDate().toString());
-      }
-    }
   }
 
   private List<SelectItemOption<String>> initScaleOptions() {
