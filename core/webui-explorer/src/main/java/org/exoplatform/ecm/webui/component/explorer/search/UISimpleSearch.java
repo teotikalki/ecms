@@ -29,6 +29,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
@@ -51,6 +52,7 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.input.UICheckBoxInput;
 import org.exoplatform.services.cms.impl.Utils;
 /**
  * Created by The eXo Platform SARL
@@ -72,10 +74,13 @@ import org.exoplatform.services.cms.impl.Utils;
       @EventConfig(listeners = UISimpleSearch.CompareExactlyActionListener.class),
       @EventConfig(listeners = UISimpleSearch.AddMetadataTypeActionListener.class),
       @EventConfig(listeners = UISimpleSearch.AddNodeTypeActionListener.class),
+      @EventConfig(listeners = UISimpleSearch.CheckboxClickActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UISimpleSearch.AddCategoryActionListener.class)
     }
 )
 public class UISimpleSearch extends UIForm {
+
+
 
   public static final String CONSTRAINTS_FORM = "ConstraintsForm";
   public static final String INPUT_SEARCH = "input";
@@ -552,5 +557,39 @@ public class UISimpleSearch extends UIForm {
       uiSearchContainer.initCategoryPopup();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
+  }
+  public static class CheckboxClickActionListener extends EventListener<UISimpleSearch>{
+
+    @Override
+    public void execute(Event<UISimpleSearch> event) throws Exception {
+      String childID = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIConstraintsForm constraintsForm = ((UIConstraintsForm)event.getSource().getChildById(CONSTRAINTS_FORM));
+      UICheckBoxInput checkBoxInput = constraintsForm.getChildById(childID);
+      
+      UIFormStringInput formStringInput;
+      switch (childID) {
+      case UIConstraintsForm.CONTAIN_PROPERTY:
+        formStringInput = constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN);  
+        break;
+      case UIConstraintsForm.EXACTLY_PROPERTY:
+        formStringInput = constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN_EXACTLY);  
+        break;
+      default:
+        formStringInput = constraintsForm.getUIStringInput(UIConstraintsForm.NOT_CONTAIN);
+        break;
+      }
+      
+      if(checkBoxInput.getValue()) formStringInput.addValidator(SearchValidator.class);
+      else{
+        int i = 0;
+        for( ;i < formStringInput.getValidators().size();i++)
+          if(formStringInput.getValidators().get(i) instanceof SearchValidator) break;
+        if(i < formStringInput.getValidators().size())
+          formStringInput.getValidators().remove(i);
+      }
+      
+      event.getRequestContext().addUIComponentToUpdateByAjax(formStringInput);
+    }
+
   }
 }

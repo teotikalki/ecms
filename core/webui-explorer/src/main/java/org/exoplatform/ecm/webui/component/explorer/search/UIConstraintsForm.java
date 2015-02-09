@@ -23,9 +23,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -93,15 +95,15 @@ public class UIConstraintsForm extends UIFormInputSetWithAction implements UISel
     addUIFormInput(new UIFormSelectBox(OPERATOR, OPERATOR, typeOperation)) ;
 
     addUIFormInput(new UICheckBoxInput(EXACTLY_PROPERTY, EXACTLY_PROPERTY, null)) ;
-    addUIFormInput(new UIFormStringInput(PROPERTY1, PROPERTY1, null)) ;
+    addUIFormInput((new UIFormStringInput(PROPERTY1, PROPERTY1, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN_EXACTLY, CONTAIN_EXACTLY, null)) ;
 
     addUIFormInput(new UICheckBoxInput(CONTAIN_PROPERTY, CONTAIN_PROPERTY, null)) ;
-    addUIFormInput(new UIFormStringInput(PROPERTY2, PROPERTY2, null)) ;
+    addUIFormInput((new UIFormStringInput(PROPERTY2, PROPERTY2, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN, CONTAIN, null)) ;
 
     addUIFormInput(new UICheckBoxInput(NOT_CONTAIN_PROPERTY, NOT_CONTAIN_PROPERTY, null)) ;
-    addUIFormInput(new UIFormStringInput(PROPERTY3, PROPERTY3, null)) ;
+    addUIFormInput((new UIFormStringInput(PROPERTY3, PROPERTY3, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(NOT_CONTAIN, NOT_CONTAIN, null)) ;
 
 
@@ -119,9 +121,9 @@ public class UIConstraintsForm extends UIFormInputSetWithAction implements UISel
     uiToDate.setDisplayTime(true) ;
     addUIFormInput(uiToDate) ;
     addUIFormInput(new UICheckBoxInput(NODETYPE_PROPERTY, NODETYPE_PROPERTY, null)) ;
-    addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
+    addUIFormInput((new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UICheckBoxInput(CATEGORY_PROPERTY, CATEGORY_PROPERTY, null)) ;
-    addUIFormInput(new UIFormStringInput(CATEGORY_TYPE, CATEGORY_TYPE, null)) ;
+    addUIFormInput((new UIFormStringInput(CATEGORY_TYPE, CATEGORY_TYPE, null)).addValidator(ECMNameValidator.class)) ;
   }
 
   private String getContainQueryString(String property, String type, boolean isContain) {
