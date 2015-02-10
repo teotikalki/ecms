@@ -61,6 +61,7 @@ public class UITabForm extends UIForm {
   final static public String FIELD_NAME = "tabName" ;
   private List<?> buttons_ ;
   private UIExtensionManager uiExtensionManager = null;
+  private String viewName;
 
   public UITabForm() throws Exception {
     setComponentConfig(getClass(), null) ;
@@ -72,6 +73,10 @@ public class UITabForm extends UIForm {
     for(Object bt : buttons_) {
       addUIFormInput(new UICheckBoxInput(getButtonName(bt), "", null)) ;
     }
+  }
+
+  public void setViewName(String name) {
+    viewName = name;
   }
 
   private String getButtonName(Object bt) {
@@ -103,7 +108,7 @@ public class UITabForm extends UIForm {
       UIExtension uiExtension = uiExtensionManager.getUIExtension(ManageViewService.EXTENSION_TYPE, StringUtils.capitalize(uiComponent.getId()));
       if(uiExtension instanceof UIECMExtension){
         String allowView = ((UIECMExtension) uiExtension).getView();
-        if(!allowView.contains(tab.getTabName())){
+        if(viewName != null && !allowView.contains(viewName)){
           this.removeChildById(uiComponent.getId());
         }
       }
