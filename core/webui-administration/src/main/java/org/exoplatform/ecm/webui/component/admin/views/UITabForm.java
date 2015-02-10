@@ -23,6 +23,7 @@ import org.exoplatform.ecm.webui.core.UIECMExtension;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.ext.UIExtension;
 import org.exoplatform.webui.ext.UIExtensionManager;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
@@ -94,16 +95,16 @@ public class UITabForm extends UIForm {
     if(tab == null) return ;
     getUIStringInput(FIELD_NAME).setDisabled(true).setValue(tab.getTabName()) ;
     String buttonsProperty = tab.getButtons() ;
-    String[] buttonArray = StringUtils.split(buttonsProperty, ";") ;
-    for(String bt : buttonArray){
-      UICheckBoxInput cbInput = getUICheckBoxInput(bt.trim()) ;
-      if(cbInput != null) cbInput.setChecked(true) ;
-      cbInput.setRendered(true);
-      UIExtension uiExtension = uiExtensionManager.getUIExtension(ManageViewService.EXTENSION_TYPE, StringUtils.capitalize(bt));
+    for(UIComponent uiComponent:this.getChildren()){
+      if(!(uiComponent instanceof UICheckBoxInput)) continue;
+      if(buttonsProperty.contains(uiComponent.getId())){
+        ((UICheckBoxInput) uiComponent).setChecked(true);
+      }
+      UIExtension uiExtension = uiExtensionManager.getUIExtension(ManageViewService.EXTENSION_TYPE, StringUtils.capitalize(uiComponent.getId()));
       if(uiExtension instanceof UIECMExtension){
         String allowView = ((UIECMExtension) uiExtension).getView();
         if(!allowView.contains(tab.getTabName())){
-          cbInput.setRendered(false);
+          this.removeChildById(uiComponent.getId());
         }
       }
     }
