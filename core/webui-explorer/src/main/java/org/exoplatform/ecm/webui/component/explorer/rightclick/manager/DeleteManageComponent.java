@@ -68,6 +68,7 @@ import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.listener.ListenerService;
 import org.exoplatform.services.log.ExoLogger;
@@ -258,6 +259,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
    */
   private String moveToTrash(String srcPath, Node node, Event<?> event, boolean isMultiSelect) throws Exception {
     TrashService trashService = WCMCoreUtils.getService(TrashService.class);
+    AuditService auditService = WCMCoreUtils.getService(AuditService.class);
     boolean ret = true;
     String trashId="-1";
     final String virtualNodePath = srcPath;
@@ -276,6 +278,14 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
         node.unlock();
       }
 
+      //remove mixin auditable
+      if( node.isNodeType(Utils.EXO_AUDITABLE)){
+        node.removeMixin(Utils.EXO_AUDITABLE);
+      }
+      //remove audit relations 
+      if(auditService.hasHistory(node)) {
+        auditService.removeHistory(node);
+      }
       //remove all relations that refer to this node
       RelationsService relationService = uiApp.getApplicationComponent(RelationsService.class) ;
       PropertyIterator iter = node.getReferences();
