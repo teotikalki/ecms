@@ -16,8 +16,22 @@
  */
 package org.exoplatform.services.pdfviewer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jcr.Node;
+
 import org.artofsolving.jodconverter.office.OfficeException;
-import org.exoplatform.commons.serialization.api.annotations.Serialized;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.impl.Utils;
@@ -26,24 +40,7 @@ import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
-import org.exoplatform.services.wcm.utils.WCMCoreUtils;
 import org.icepdf.core.pobjects.Document;
-import org.icepdf.core.pobjects.PInfo;
-
-import javax.jcr.Node;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Created by The eXo Platform SAS
  * Author : Nguyen The Vinh From ECM Of eXoPlatform
@@ -96,8 +93,6 @@ public class PDFViewerService {
       name = reduceFileNameSize(name);
       FileInputStream fis = new FileInputStream(input);
       document.setInputStream(new BufferedInputStream(fis), name);
-
-
       return document;
     } catch (Exception ex) {
       LOG.warn("Failed to build Document image from pdf file " + name);
@@ -118,16 +113,12 @@ public class PDFViewerService {
   public File getPDFDocumentFile(Node currentNode, String repoName) throws Exception {
     String wsName = currentNode.getSession().getWorkspace().getName();
     String uuid = currentNode.getUUID();
-
-    StringBuilder pathKeyBuilder = new StringBuilder();
-    StringBuilder lastModifiedDateKeyBuilder = new StringBuilder();
-    StringBuilder metaDataKeyBuilder = new StringBuilder();
-    pathKeyBuilder.append(repoName).append("/").append(wsName).append("/").append(uuid);
-    lastModifiedDateKeyBuilder.append(pathKeyBuilder).append("/jcr:lastModified");
-    metaDataKeyBuilder.append(pathKeyBuilder).append("/pdfInfo");
-
-    String path = (String) pdfCache.get(new ObjectKey(pathKeyBuilder.toString()));
-    String lastModifiedTime = (String)pdfCache.get(new ObjectKey(lastModifiedDateKeyBuilder.toString()));
+    StringBuilder bd = new StringBuilder();
+    StringBuilder bd1 = new StringBuilder();
+    bd.append(repoName).append("/").append(wsName).append("/").append(uuid);
+    bd1.append(bd).append("/jcr:lastModified");
+    String path = (String) pdfCache.get(new ObjectKey(bd.toString()));
+    String lastModifiedTime = (String)pdfCache.get(new ObjectKey(bd1.toString()));
     File content = null;
     String name = currentNode.getName().replaceAll(":","_");
     Node contentNode = currentNode.getNode("jcr:content");
@@ -179,43 +170,14 @@ public class PDFViewerService {
       }
       if (content != null && content.exists()) {
         if (contentNode.hasProperty("jcr:lastModified")) {
-          pdfCache.put(new ObjectKey(pathKeyBuilder.toString()), content.getPath());
-          pdfCache.put(new ObjectKey(lastModifiedDateKeyBuilder.toString()), lastModified);
-
-          // Set pdf meta data to cache
-          Document document = buildDocumentImage(content, name);
-          int maxPages = -1;
-          if (document != null) {
-            maxPages = document.getNumberOfPages();
-          }
-          Map<String, String> metadatas = createPDFInfo(document);
-          document.dispose();
-
-          PDFInfo pdfInfo = new PDFInfo();
-          pdfInfo.setMaxPages(maxPages);
-          pdfInfo.setMetaDatas(metadatas);
-          pdfCache.put(new ObjectKey(metaDataKeyBuilder.toString()), pdfInfo);
+          pdfCache.put(new ObjectKey(bd.toString()), content.getPath());
+          pdfCache.put(new ObjectKey(bd1.toString()), lastModified);
         }
       }
     }
     return content;
   }
-
-  public PDFInfo getPDFInfo(Node currentNode) throws Exception {
-    String repoName = WCMCoreUtils.getRepository().getConfiguration().getName();
-    String wsName = currentNode.getSession().getWorkspace().getName();
-    StringBuilder pdfInfoKeyBuilder = new StringBuilder();
-    pdfInfoKeyBuilder.append(repoName).append("/").append(wsName).append("/").append(currentNode.getUUID()).append
-            ("/pdfInfo");
-
-    PDFInfo pdfInfo = (PDFInfo)pdfCache.get(new ObjectKey(pdfInfoKeyBuilder.toString()));
-    if (pdfInfo == null) {
-      getPDFDocumentFile(currentNode, repoName);
-      pdfInfo = (PDFInfo)pdfCache.get(new ObjectKey(pdfInfoKeyBuilder.toString()));
-    }
-    return pdfInfo;
-  }
-
+  
   /**
    * reduces the file name size. If the length is > 150, return the first 150 characters, else, return the original value
    * @param name the name
@@ -237,61 +199,5 @@ public class PDFViewerService {
     }
     os.flush();
     os.close();
-  }
-
-  private Map<String, String> createPDFInfo(Document document) {
-    Map<String, String> metadatas = new HashMap<String, String>();
-    PInfo documentInfo = document.getInfo();
-    if (documentInfo != null) {
-      if(documentInfo.getTitle() != null && documentInfo.getTitle().length() > 0) {
-        metadatas.put("title", documentInfo.getTitle());
-      }
-      if(documentInfo.getAuthor() != null && documentInfo.getAuthor().length() > 0) {
-        metadatas.put("author", documentInfo.getAuthor());
-      }
-      if(documentInfo.getSubject() != null && documentInfo.getSubject().length() > 0) {
-        metadatas.put("subject", documentInfo.getSubject());
-      }
-      if(documentInfo.getKeywords() != null && documentInfo.getKeywords().length() > 0) {
-        metadatas.put("keyWords", documentInfo.getKeywords());
-      }
-      if(documentInfo.getCreator() != null && documentInfo.getCreator().length() > 0) {
-        metadatas.put("creator", documentInfo.getCreator());
-      }
-      if(documentInfo.getProducer() != null && documentInfo.getProducer().length() > 0) {
-        metadatas.put("producer", documentInfo.getProducer());
-      }
-      if(documentInfo.getCreationDate() != null) {
-        metadatas.put("creationDate", documentInfo.getCreationDate().toString());
-      }
-      if(documentInfo.getModDate() != null) {
-        metadatas.put("modDate", documentInfo.getModDate().toString());
-      }
-    }
-
-    return metadatas;
-  }
-
-  @Serialized
-  public class PDFInfo {
-    private Map<String, String> metaDatas;
-
-    private int maxPages = -1;
-
-    public Map<String, String> getMetaDatas() {
-      return metaDatas;
-    }
-
-    public void setMetaDatas(Map<String, String> metaDatas) {
-      this.metaDatas = metaDatas;
-    }
-
-    public int getMaxPages() {
-      return maxPages;
-    }
-
-    public void setMaxPages(int maxPages) {
-      this.maxPages = maxPages;
-    }
   }
 }
