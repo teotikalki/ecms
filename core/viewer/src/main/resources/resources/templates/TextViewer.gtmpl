@@ -41,18 +41,11 @@
 				<h6 class="topTitle">$title</h6>
 				<%
 					if(contentNode.hasProperty("jcr:data")){
-						String iframeId = uiParent.getId() + "ifame" ;
-						def rqcontext = _ctx.getRequestContext() ;
 						def strContent = StringEscapeUtils.unescapeHtml(contentNode.getProperty("jcr:data").getString());	
-						strContent = ContentReader.getEscapeHtmlContent(Utils.sanitize(strContent));	        	  
+						strContent = uicomponent.removeScript(strContent);	
 				%>
-				<div class="textContent">
-					<textarea id="<%=iframeId%>"><%=strContent%></textarea> 
-					<% 
-					    def rcontext = _ctx.getRequestContext() ;
-                        def jsManager = rcontext.getJavascriptManager();
-                        jsManager.require("SHARED/wcm-utils", "wcmutil").addScripts("wcmutil.WCMUtils.replaceToIframe('$iframeId');");
-					 %>
+				<div>
+					<%=strContent%>
 				</div>
 				<%}%>
 			</div>
@@ -62,7 +55,7 @@
 					<%
 						if(contentNode.hasProperty("jcr:data")) {
 							def strContent = StringEscapeUtils.unescapeHtml(contentNode.getProperty("jcr:data").getString());	
-							strContent = ContentReader.getEscapeHtmlContent(Utils.sanitize(strContent));
+							strContent = ContentReader.getEscapeHtmlContent(strContent);
 							println "<pre>" + strContent + "</pre>"; 
 						}
 					%>

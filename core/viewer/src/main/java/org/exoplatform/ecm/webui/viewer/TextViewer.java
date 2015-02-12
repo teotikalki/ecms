@@ -33,4 +33,8 @@ public class TextViewer extends UIComponent {
 
   public TextViewer() throws Exception {
   }
+  
+  public String removeScript(String content){
+    return content.replaceAll("<script>", "&lt;script&gt;").replaceAll("</script>", "&lt;/script&gt;");
+  }
 }
