@@ -18,8 +18,17 @@
   var restPrefix = portal+"/"+rest;
 
   var OpenDocumentInOffice = function() {}
+  var uiWorkingAreaWidth=0;
+  var uiRightContainerWidth=0;
+  var uiRightContainerStyle="";
+
+  var uisideBarWidth=0;
+
   var resizeBarHeight=0;
-  var rightContainerWidth=0;
+  var resizeBarContentWidth="";
+
+  var uiActionBarContainer="";
+
   /**
    * Open document by Office application or desktop apps
    * absolutePath is webdav path of document. webdav server have to support level 2
@@ -50,8 +59,9 @@
         console.log("Cannot open. MSOffice version is not support!");
       }
     }
-    gj("#UISideBar").show();
-    gj("#UIViewBarContainer").show();
+    if(uisideBarWidth === 0){ //hide side bar
+      gj("#UISideBar").show();
+    }
   }
 
   /**
@@ -97,8 +107,14 @@
             defaultEnviromentFilter(openDocument);//only show with support enviroment.
           }
         });
-        resizeBarHeight = gj(".resizeBar").attr("style");
-        rightContainerWidth = gj("#UIWorkingArea").width();
+        uiWorkingAreaWidth    = gj("#UIWorkingArea").width();
+        uiRightContainerWidth = gj(".rightContainer").width();
+        uiRightContainerStyle = gj(".rightContainer").attr("style");
+
+        uisideBarWidth        = gj("#UISideBar").width();
+        resizeBarHeight       = gj(".resizeBar").attr("style");
+        resizeBarContentWidth = gj(".resizeBar").width();
+        uiActionBarContainer  = gj("#uiActionsBarContainer").html();
   }
 
 
@@ -128,27 +144,21 @@
   }
 
   function fitLayout(){
-    if (navigator.appVersion.indexOf("Mac") === -1) return;	  
-    var sideBarWidth = gj("#UISideBar").width();
-    var resizeBarContentWidth = gj(".resizeBar").width();
+    if (navigator.appVersion.indexOf("Mac") === -1) return;
+    
+    uiRightContainerStyle = gj(".rightContainer").attr("style");
 
-        if(sideBarWidth >0 && resizeBarHeight !== undefined) {
-           rightContainerWidth = "width: "+eval(rightContainerWidth - sideBarWidth - resizeBarContentWidth)+"px;";	
-           gj(".rightContainer").attr("style", rightContainerWidth);
-	   gj(".resizeBar").attr("style", resizeBarHeight);
-           gj(".resizeBarContent").attr("style", resizeBarHeight);
-	}else{			
-          if(resizeBarHeight !== undefined && resizeBarHeight !== null ){
-          gj(".resizeBar").attr("style", resizeBarHeight);
-          gj(".resizeBarContent").attr("style", resizeBarHeight);
-
-          rightContainerWidth = "width: "+eval(rightContainerWidth - sideBarWidth - resizeBarContentWidth)+"px;";
-          }else{
-            gj("#UISideBar").hide();
-          }
-          gj(".rightContainer").attr("style", "width: "+rightContainerWidth+"px;");
+    if(uisideBarWidth === 0){ //hide side bar
+      gj("#UISideBar").hide();
+      gj(".rightContainer").width(uiWorkingAreaWidth);
+      gj("#uiActionsBarContainer").html(uiActionBarContainer);
+    }else{
+      gj(".rightContainer").width(uiRightContainerWidth);
+      gj(".resizeBar").width(resizeBarContentWidth);
+      gj(".resizeBar").attr("style", resizeBarHeight);
+      gj(".resizeBarContent").attr("style", resizeBarHeight);
+      gj("#uiActionsBarContainer").html(uiActionBarContainer);
     }
-    gj("#UIViewBarContainer").hide();    
   }
 	
   /**
