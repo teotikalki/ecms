@@ -546,10 +546,10 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
   /**
    * Get undo link to restore nodes that deleted
    *
-   * @param nodePath node path of nodes want to restore
+   * @param trashId node path of nodes want to restore
    * @throws Exception
    */
-  private String getUndoLink(String nodePath) throws Exception {
+  private String getUndoLink(String trashId) throws Exception {
     String undoLink = "";
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
@@ -560,12 +560,12 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     QueryResult queryResult = null;
     NodeIterator iter = null;
     StringBuffer sb = new StringBuffer();
-    if (nodePath.indexOf(";") > -1) {
-      String[] nodePaths = nodePath.split(";");
+    if (trashId.indexOf(";") > -1) {
+      String[] nodePaths = trashId.split(";");
       for(int i=0; i<nodePaths.length; i++) {        
-        nodePath = nodePaths[i].substring(nodePaths[i].indexOf(":") + 1, nodePaths[i].length());
+        trashId = nodePaths[i].substring(nodePaths[i].indexOf(":") + 1, nodePaths[i].length());
         String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '$0'";
-        queryStatement = StringUtils.replace(queryStatement, "$0", nodePath);
+        queryStatement = StringUtils.replace(queryStatement, "$0", trashId);
         Query query = queryManager.createQuery(queryStatement, Query.SQL);
         queryResult = query.execute();
         iter = queryResult.getNodes();
@@ -576,9 +576,9 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       undoLink = sb.toString();
       if(undoLink.length() > 0) undoLink = undoLink.substring(0,undoLink.length()-1);
     } else {
-      nodePath = nodePath.substring(nodePath.indexOf(":") + 1, nodePath.length());
+      trashId = trashId.substring(trashId.indexOf(":") + 1, trashId.length());
       String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '$0'";
-      queryStatement = StringUtils.replace(queryStatement, "$0", nodePath);
+      queryStatement = StringUtils.replace(queryStatement, "$0", trashId);
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
       queryResult = query.execute();
       iter = queryResult.getNodes();
