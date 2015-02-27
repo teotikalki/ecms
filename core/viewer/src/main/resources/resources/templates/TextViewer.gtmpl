@@ -41,8 +41,7 @@
 				<h6 class="topTitle">$title</h6>
 				<%
 					if(contentNode.hasProperty("jcr:data")){
-						def strContent = StringEscapeUtils.unescapeHtml(contentNode.getProperty("jcr:data").getString());	
-						strContent = uicomponent.removeScript(strContent);	
+						def strContent = contentNode.getProperty("jcr:data").getString();	
 				%>
 				<div>
 					<%=strContent%>
