@@ -52,7 +52,6 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.input.UICheckBoxInput;
 import org.exoplatform.services.cms.impl.Utils;
 /**
  * Created by The eXo Platform SARL
@@ -562,34 +561,51 @@ public class UISimpleSearch extends UIForm {
 
     @Override
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      String childID = event.getRequestContext().getRequestParameter(OBJECTID);
       UIConstraintsForm constraintsForm = ((UIConstraintsForm)event.getSource().getChildById(CONSTRAINTS_FORM));
-      UICheckBoxInput checkBoxInput = constraintsForm.getChildById(childID);
       
-      UIFormStringInput formStringInput;
-      switch (childID) {
-      case UIConstraintsForm.CONTAIN_PROPERTY:
-        formStringInput = constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN);  
-        break;
-      case UIConstraintsForm.EXACTLY_PROPERTY:
-        formStringInput = constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN_EXACTLY);  
-        break;
-      default:
-        formStringInput = constraintsForm.getUIStringInput(UIConstraintsForm.NOT_CONTAIN);
-        break;
+      if(constraintsForm.getUICheckBoxInput(UIConstraintsForm.CONTAIN_PROPERTY).getValue()){
+        addSearchValidator(constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN));
       }
-      
-      if(checkBoxInput.getValue()) formStringInput.addValidator(SearchValidator.class);
       else{
-        int i = 0;
-        for( ;i < formStringInput.getValidators().size();i++)
-          if(formStringInput.getValidators().get(i) instanceof SearchValidator) break;
-        if(i < formStringInput.getValidators().size())
-          formStringInput.getValidators().remove(i);
+        removeSearchValidator(constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN));
+      }
+      if(constraintsForm.getUICheckBoxInput(UIConstraintsForm.EXACTLY_PROPERTY).getValue()){
+        addSearchValidator(constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN_EXACTLY));
+      }
+      else{
+        removeSearchValidator(constraintsForm.getUIStringInput(UIConstraintsForm.CONTAIN_EXACTLY));
+        }
+      if(constraintsForm.getUICheckBoxInput(UIConstraintsForm.NOT_CONTAIN_PROPERTY).getValue()){
+        addSearchValidator(constraintsForm.getUIStringInput(UIConstraintsForm.NOT_CONTAIN));
+      }
+      else{
+        removeSearchValidator(constraintsForm.getUIStringInput(UIConstraintsForm.NOT_CONTAIN));
       }
       
-      event.getRequestContext().addUIComponentToUpdateByAjax(formStringInput);
+      event.getRequestContext().addUIComponentToUpdateByAjax(constraintsForm);
     }
 
+  }
+  public static void removeSearchValidator(UIFormStringInput uiStringInput) {
+    if(uiStringInput.getValidators() == null) return;
+    int i = 0;
+    for( ;i < uiStringInput.getValidators().size();i++)
+      if(uiStringInput.getValidators().get(i) instanceof SearchValidator) break;
+    if(i < uiStringInput.getValidators().size())
+      uiStringInput.getValidators().remove(i);
+    
+  }
+  public static void addSearchValidator(UIFormStringInput uiStringInput) {
+    try {
+      if(uiStringInput.getValidators() != null)
+      {
+        for(int i = 0 ;i < uiStringInput.getValidators().size();i++)
+          if(uiStringInput.getValidators().get(i) instanceof SearchValidator) return;
+      }
+      uiStringInput.addValidator(SearchValidator.class);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
   }
 }

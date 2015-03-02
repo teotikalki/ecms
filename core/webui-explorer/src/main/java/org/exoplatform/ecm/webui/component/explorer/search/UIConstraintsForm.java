@@ -69,6 +69,7 @@ public class UIConstraintsForm extends UIFormInputSetWithAction implements UISel
   final static public String SPLIT_REGEX = "/|\\s+|:" ;
   final static public String DATETIME_REGEX =
     "^(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})\\s*(\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})?$" ;
+  final static public String CHECKBOX_CLICK_EVENT = "CheckboxClick";
 
   private String              virtualDateQuery_;
 
@@ -94,15 +95,18 @@ public class UIConstraintsForm extends UIFormInputSetWithAction implements UISel
     typeOperation.add(new SelectItemOption<String>(_OR_OPERATION, OR_OPERATION));
     addUIFormInput(new UIFormSelectBox(OPERATOR, OPERATOR, typeOperation)) ;
 
-    addUIFormInput(new UICheckBoxInput(EXACTLY_PROPERTY, EXACTLY_PROPERTY, null)) ;
+    addUIFormInput(new UICheckBoxInput(EXACTLY_PROPERTY, EXACTLY_PROPERTY, null));
+    getUICheckBoxInput(EXACTLY_PROPERTY).setOnChange(CHECKBOX_CLICK_EVENT);
     addUIFormInput((new UIFormStringInput(PROPERTY1, PROPERTY1, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN_EXACTLY, CONTAIN_EXACTLY, null)) ;
 
     addUIFormInput(new UICheckBoxInput(CONTAIN_PROPERTY, CONTAIN_PROPERTY, null)) ;
+    getUICheckBoxInput(CONTAIN_PROPERTY).setOnChange(CHECKBOX_CLICK_EVENT);
     addUIFormInput((new UIFormStringInput(PROPERTY2, PROPERTY2, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN, CONTAIN, null)) ;
 
     addUIFormInput(new UICheckBoxInput(NOT_CONTAIN_PROPERTY, NOT_CONTAIN_PROPERTY, null)) ;
+    getUICheckBoxInput(NOT_CONTAIN_PROPERTY).setOnChange(CHECKBOX_CLICK_EVENT);
     addUIFormInput((new UIFormStringInput(PROPERTY3, PROPERTY3, null)).addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(NOT_CONTAIN, NOT_CONTAIN, null)) ;
 
