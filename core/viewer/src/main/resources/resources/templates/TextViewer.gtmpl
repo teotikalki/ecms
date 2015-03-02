@@ -53,9 +53,8 @@
 				<div class="textContent">
 					<%
 						if(contentNode.hasProperty("jcr:data")) {
-							def strContent = StringEscapeUtils.unescapeHtml(contentNode.getProperty("jcr:data").getString());	
-							strContent = ContentReader.getEscapeHtmlContent(strContent);
-							println "<pre>" + strContent + "</pre>"; 
+							def strContent = contentNode.getProperty("jcr:data").getString();	
+							println "<pre>" + strContent + "</pre>";
 						}
 					%>
 				</div> 
