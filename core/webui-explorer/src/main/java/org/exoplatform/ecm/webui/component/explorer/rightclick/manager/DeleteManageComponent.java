@@ -277,14 +277,13 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
         LockUtil.removeLock(node);
         node.unlock();
       }
-
-      //remove mixin auditable
-      if( node.isNodeType(Utils.EXO_AUDITABLE)){
-        node.removeMixin(Utils.EXO_AUDITABLE);
-      }
       //remove audit relations 
       if(auditService.hasHistory(node)) {
         auditService.removeHistory(node);
+      }
+      //remove mixin auditable
+      if( node.isNodeType(Utils.EXO_AUDITABLE)){
+        node.removeMixin(Utils.EXO_AUDITABLE);
       }
       //remove all relations that refer to this node
       RelationsService relationService = uiApp.getApplicationComponent(RelationsService.class) ;
