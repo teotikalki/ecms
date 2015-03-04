@@ -584,28 +584,35 @@ public class UISimpleSearch extends UIForm {
       
       event.getRequestContext().addUIComponentToUpdateByAjax(constraintsForm);
     }
-
-  }
-  public static void removeSearchValidator(UIFormStringInput uiStringInput) {
-    if(uiStringInput.getValidators() == null) return;
-    int i = 0;
-    for( ;i < uiStringInput.getValidators().size();i++)
-      if(uiStringInput.getValidators().get(i) instanceof SearchValidator) break;
-    if(i < uiStringInput.getValidators().size())
-      uiStringInput.getValidators().remove(i);
     
-  }
-  public static void addSearchValidator(UIFormStringInput uiStringInput) {
-    try {
-      if(uiStringInput.getValidators() != null)
-      {
-        for(int i = 0 ;i < uiStringInput.getValidators().size();i++)
-          if(uiStringInput.getValidators().get(i) instanceof SearchValidator) return;
-      }
-      uiStringInput.addValidator(SearchValidator.class);
-    } catch (Exception e) {
-      e.printStackTrace();
+    /*
+     * remove SearchValidator from <code>UIFormStringInput</code>
+     * @param uiStringInput
+     * */
+    private void removeSearchValidator(UIFormStringInput uiStringInput) {
+      if(uiStringInput.getValidators() == null) return;
+      int i = 0;
+      for( ;i < uiStringInput.getValidators().size();i++)
+        if(uiStringInput.getValidators().get(i) instanceof SearchValidator) break;
+      if(i < uiStringInput.getValidators().size())
+        uiStringInput.getValidators().remove(i);
+      
     }
     
+    /*
+     * Adding SearchValidator for UIFormStringInput, if UIFormStringInput already have this
+     * validator, this function do nothing
+     * @param uiStringInput
+     * @throw Exception
+     * */
+    private void addSearchValidator(UIFormStringInput uiStringInput) throws Exception {
+        if(uiStringInput.getValidators() != null)
+        {
+          for(int i = 0 ;i < uiStringInput.getValidators().size();i++)
+            if(uiStringInput.getValidators().get(i) instanceof SearchValidator) return;
+        }
+        uiStringInput.addValidator(SearchValidator.class);
+    }
   }
+
 }
