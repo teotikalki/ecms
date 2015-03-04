@@ -35,14 +35,10 @@ import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.Session;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryManager;
-import javax.jcr.query.QueryResult;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.exoplatform.ecm.webui.component.explorer.UIConfirmMessage;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -194,10 +190,6 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       processRemoveNode(nodePath, node, event, isMultiSelect);
       return "0";
     }else {
-      String nodeName = node.getName();
-      String nodeUUID = null;
-      if (Utils.isReferenceable(node))
-        nodeUUID = node.getUUID();
       trashId = moveToTrash(nodePath, node, event, isMultiSelect);
       if (!trashId.equals("-1")) {
         //Broadcast the event when user move node to Trash
@@ -206,11 +198,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
 
         TrashService trashService = WCMCoreUtils.getService(TrashService.class);
         Node parent = trashService.getTrashHomeNode();
-        if (nodeUUID != null) {
-          node = parent.getSession().getNodeByUUID(nodeUUID);
-        } else {
-          node = parent.getNode(nodeName);
-        }
+        node = trashService.getNodeByTrashId(trashId);
         if (node.getPrimaryNodeType().getName().equals(NodetypeConstant.NT_FILE)) {
           if (activityService.isBroadcastNTFileEvents(node)) {
             listenerService.broadcast(ActivityCommonService.FILE_REMOVE_ACTIVITY, parent, node);
@@ -285,6 +273,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       if( node.isNodeType(Utils.EXO_AUDITABLE)){
         node.removeMixin(Utils.EXO_AUDITABLE);
       }
+      node.save();
       //remove all relations that refer to this node
       RelationsService relationService = uiApp.getApplicationComponent(RelationsService.class) ;
       PropertyIterator iter = node.getReferences();
@@ -560,41 +549,25 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
    */
   private String getUndoLink(String trashId) throws Exception {
     String undoLink = "";
+    TrashService trashService = WCMCoreUtils.getService(TrashService.class);
+    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
 
     String trashWorkspace = portletPrefs.getValue(Utils.TRASH_WORKSPACE, "");
-    Session session = uiExplorer.getSessionByWorkspace(trashWorkspace);
-    QueryManager queryManager = session.getWorkspace().getQueryManager();
-    QueryResult queryResult = null;
-    NodeIterator iter = null;
     StringBuffer sb = new StringBuffer();
     if (trashId.indexOf(";") > -1) {
       String[] nodePaths = trashId.split(";");
       for(int i=0; i<nodePaths.length; i++) {        
         trashId = nodePaths[i].substring(nodePaths[i].indexOf(":") + 1, nodePaths[i].length());
-        String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '$0'";
-        queryStatement = StringUtils.replace(queryStatement, "$0", trashId);
-        Query query = queryManager.createQuery(queryStatement, Query.SQL);
-        queryResult = query.execute();
-        iter = queryResult.getNodes();
-        while (iter.hasNext()) {
-          sb.append(trashWorkspace).append(":").append(iter.nextNode().getPath()).append(";");
-        }        
+        sb.append(trashWorkspace).append(":").append(trashService.getNodeByTrashId(trashId).getPath()).append(";");
       }
       undoLink = sb.toString();
       if(undoLink.length() > 0) undoLink = undoLink.substring(0,undoLink.length()-1);
     } else {
       trashId = trashId.substring(trashId.indexOf(":") + 1, trashId.length());
-      String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '$0'";
-      queryStatement = StringUtils.replace(queryStatement, "$0", trashId);
-      Query query = queryManager.createQuery(queryStatement, Query.SQL);
-      queryResult = query.execute();
-      iter = queryResult.getNodes();
-      while (iter.hasNext()) {
-        Node tmpNode = iter.nextNode();
-        sb.append(tmpNode.getPath()).append(";");
-      }
+      Node tmpNode = trashService.getNodeByTrashId(trashId);
+      sb.append(tmpNode.getPath()).append(";");
       undoLink = sb.toString();
       if(undoLink.length() > 0) {
         undoLink = undoLink.substring(0,undoLink.length()-1);
