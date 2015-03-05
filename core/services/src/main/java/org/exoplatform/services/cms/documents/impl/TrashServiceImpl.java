@@ -33,6 +33,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.ItemImpl;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
+import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.seo.SEOService;
@@ -462,9 +463,9 @@ public class TrashServiceImpl implements TrashService {
         .getSession(trashWorkspace_,
                     repositoryService.getCurrentRepository());
     QueryManager queryManager = session.getWorkspace().getQueryManager();
-    String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '$0'";
-    queryStatement = StringUtils.replace(queryStatement, "$0", trashId);
-    Query query = queryManager.createQuery(queryStatement, Query.SQL);
+    String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '" + trashId + "'";
+    QueryImpl query = (QueryImpl) queryManager.createQuery(queryStatement, Query.SQL);
+    query.setLimit(1);
     queryResult = query.execute();
     iter = queryResult.getNodes();
     if(iter.hasNext()) return iter.nextNode();

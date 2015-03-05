@@ -510,7 +510,7 @@ public class TestTrashService extends BaseWCMTestCase {
 
     session.save();
     assertNotNull(trashService.getNodeByTrashId(trashId));
-    assertNull(trashService.getNodeByTrashId(java.util.UUID.randomUUID().toString()));
+    assertNull(trashService.getNodeByTrashId(trashId + "qqqqqqqqqqqqqqq"));
     trashNode.remove();
     testNode.remove();
     session.save();
