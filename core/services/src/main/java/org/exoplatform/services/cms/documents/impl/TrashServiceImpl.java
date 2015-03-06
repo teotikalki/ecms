@@ -16,7 +16,6 @@
  */
 package org.exoplatform.services.cms.documents.impl;
 
-import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.InitParams;
@@ -46,7 +45,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -456,15 +454,16 @@ public class TrashServiceImpl implements TrashService {
 
   }
   
-  public Node getNodeByTrashId(String trashId) throws InvalidQueryException, RepositoryException{
+  public Node getNodeByTrashId(String trashId) throws RepositoryException{
     QueryResult queryResult;
     NodeIterator iter;
     Session session = WCMCoreUtils.getSystemSessionProvider()
         .getSession(trashWorkspace_,
                     repositoryService.getCurrentRepository());
     QueryManager queryManager = session.getWorkspace().getQueryManager();
-    String queryStatement = "SELECT * from exo:restoreLocation WHERE exo:trashId = '" + trashId + "'";
-    QueryImpl query = (QueryImpl) queryManager.createQuery(queryStatement, Query.SQL);
+    StringBuilder sb = new StringBuilder();
+    sb.append("SELECT * from exo:restoreLocation WHERE exo:trashId = '").append(trashId).append("'");
+    QueryImpl query = (QueryImpl) queryManager.createQuery(sb.toString(), Query.SQL);
     query.setLimit(1);
     queryResult = query.execute();
     iter = queryResult.getNodes();
