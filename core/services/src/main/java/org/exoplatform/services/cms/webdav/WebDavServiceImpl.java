@@ -55,6 +55,7 @@ import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService;
+import org.exoplatform.services.jcr.webdav.resource.ResourceUtil;
 import org.exoplatform.services.jcr.webdav.util.InitParamsDefaults;
 import org.exoplatform.services.jcr.webdav.util.TextUtil;
 import org.exoplatform.services.listener.ListenerService;
@@ -96,6 +97,8 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
    */
   private static final Log LOG = ExoLogger.getLogger(WebDavServiceImpl.class.getName());
 
+  private static final String ALLOW_LISTING_PARAM = "allow-listing";
+
   private final String POST_UPLOAD_CONTENT_EVENT = "WebDavService.event.postUpload";
 
   private final NodeFinder nodeFinder;
@@ -106,11 +109,16 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
 
   private final MimeTypeResolver mimeTypeResolver;
 
+  private boolean allowListing = true;
+
   public WebDavServiceImpl(InitParams params,
                            RepositoryService repositoryService,
                            ThreadLocalSessionProviderService sessionProviderService,
                            NodeFinder nodeFinder) throws Exception {
     super(params, repositoryService, sessionProviderService);
+    if (params.containsKey(ALLOW_LISTING_PARAM)) {
+      allowListing = Boolean.parseBoolean(params.getValueParam(ALLOW_LISTING_PARAM).getValue());
+    }
     this.repositoryService = repositoryService;
     this.nodeFinder = nodeFinder;
     this.listenerService = WCMCoreUtils.getService(ListenerService.class);
@@ -239,6 +247,12 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
 
     try {
       repoPath = convertRepoPath(repoPath, true);
+      repoName = getRepositoryName(repoName);
+      Session session = session(repoName, workspaceName(repoPath), null);
+      Node node = (Node)session.getItem(path(repoPath));
+      if (!allowListing && !ResourceUtil.isFile(node)) {
+        return Response.seeOther(new URI("/")).build();
+      }
     } catch (PathNotFoundException exc) {
       return Response.status(HTTPStatus.NOT_FOUND).entity(exc.getMessage()).build();
     } catch (NoSuchWorkspaceException exc) {
