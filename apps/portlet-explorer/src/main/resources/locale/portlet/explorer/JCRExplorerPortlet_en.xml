@@ -254,7 +254,7 @@
       <UISelectRestorePath>Select Restore Path</UISelectRestorePath>
       <UISEOForm>Manage SEO</UISEOForm>
       <UISEOToolbarForm>Manage SEO</UISEOToolbarForm>
-      <UIReadOnlyFileConfirmMessage>Open as read-only</UIReadOnlyFileConfirmMessage>
+      <UIReadOnlyFileConfirmMessage>Open Document Read-only</UIReadOnlyFileConfirmMessage>
     </title>
     <header>
       <workspace>Workspace</workspace>
@@ -2421,7 +2421,7 @@
       <ReplaceData>Replace Data</ReplaceData>
       <Back>Back to Rename</Back>
       <Keepfile>Keep both files</Keepfile>
-			<ReadOnly>Open Read-only</ReadOnly>
+			<ReadOnly>ReadOnly</ReadOnly>
 			<Cancel>Cancel</Cancel>
     </label>
   </UIConfirmMessage>
