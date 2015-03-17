@@ -53,7 +53,8 @@ public class PDFViewerService {
   private static final Log LOG  = ExoLogger.getLogger(PDFViewerService.class.getName());
   private JodConverterService jodConverter_;
   private ExoCache<Serializable, Object> pdfCache;
-  private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;//5MB
+  public static final long MAX_FILE_SIZE = 5 * 1024 * 1024; //5 MB
+  public static final long MAX_PAGES = 100; // 100 pages
   
   public PDFViewerService(RepositoryService repositoryService,
                           CacheService caService,
@@ -134,7 +135,7 @@ public class PDFViewerService {
         read(input, new BufferedOutputStream(new FileOutputStream(content)));
       } else {
         // create temp file to store original data of nt:file node
-        File in = File.createTempFile(name + "_tmp", null);
+        File in = File.createTempFile(name + "_tmp", "." + extension);
         read(input, new BufferedOutputStream(new FileOutputStream(in)));
         long fileSize = in.length(); // size in byte
         LOG.info("File size: " + fileSize + " B. Size limit for preview: " + (MAX_FILE_SIZE/(1024*1024)) + " MB");
