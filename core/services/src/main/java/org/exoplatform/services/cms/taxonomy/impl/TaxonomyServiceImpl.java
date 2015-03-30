@@ -314,9 +314,6 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           node.setPermission(owner, PermissionType.ALL);
           if (creatorUser != null)
             node.setPermission(creatorUser, PermissionType.ALL);
-          for(Map.Entry<String, String[]> entry : taxonomyTreeDefaultUserPermissions_.entrySet()) {
-            node.setPermission(entry.getKey(), entry.getValue());
-          }
         }
         if (!node.isNodeType("exo:privilegeable"))
           node.addMixin("exo:privilegeable");
