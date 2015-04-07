@@ -19,7 +19,7 @@
 
     ListView.prototype.t1 = 0;
     ListView.prototype.t2 = 0;
-
+    ListView.prototype.active="active";
     //init event
     ListView.prototype.initAllEvent = function(actionAreaId, enableDragAndDrop) {
       eXo.ecm.UIListView.enableDragAndDrop = enableDragAndDrop;
@@ -235,7 +235,7 @@
       var event = event || window.event;
       var element = this;
       if (!element.selected) {
-        element.style.background = Self.colorHover;
+        gj(element).addClass(eXo.ecm.UIListView.active);
         element.temporary = true;
         //eXo.core.Browser.setOpacity(element, 100);
       }
@@ -246,7 +246,7 @@
       var element = this;
       element.temporary = false;
       if (!element.selected) {
-        element.style.background = "none";
+        gj(element).removeClass(eXo.ecm.UIListView.active);
       //  eXo.core.Browser.setOpacity(element, 85);
       }
     };
@@ -348,6 +348,7 @@
       //for select use shilf key;
       Self.temporaryItem = element;
       Self.itemsSelected = new Array(element);
+      gj(element).addClass(eXo.ecm.UIListView.active);
       // element.style.background = Self.colorSelected;
       //eXo.core.Browser.setOpacity(element, 100);
     };
@@ -397,7 +398,7 @@
           } else if(event.ctrlKey && element.selected) {
             element.selected = null;
             element.setAttribute("isLink",null);
-            element.style.background = "none";
+            gj(Self.itemsSelected[i]).removeClass(eXo.ecm.UIListView.active);
             removeItem(Self.itemsSelected, element);
           } else if (event.shiftKey) {
             //use shift key to select;
@@ -421,7 +422,7 @@
           }
           for(var i in Self.itemsSelected) {
             if (Array.prototype[i]) continue;
-            Self.itemsSelected[i].style.background = Self.colorSelected;
+            gj(Self.itemsSelected[i]).addClass(eXo.ecm.UIListView.active);
             //eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
           }
         }
@@ -534,12 +535,12 @@
                 //Dunghm: Check Shift key
                 itemBox.setAttribute("isLink",null);
                 if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
-                itemBox.style.background = Self.colorSelected;
+                gj(itemBox).addClass(eXo.UIListView.active);
                 //eXo.core.Browser.setOpacity(itemBox, 100);
               } else {
                 itemBox.selected = null;
                 itemBox.setAttribute("isLink",null);
-                itemBox.style.background = "none";
+                gj(itemBox).removeClass(eXo.UIListView.active);
                 //eXo.core.Browser.setOpacity(itemBox, 85);
               }
              }
@@ -567,12 +568,12 @@
                 //Dunghm: Check Shift key
                 itemBox.setAttribute("isLink",null);
                 if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
-                itemBox.style.background = Self.colorSelected;
+                gj(itemBox).addClass(eXo.UIListView.active);
                 //eXo.core.Browser.setOpacity(itemBox, 100);
               } else {
                 itemBox.selected = null;
                 itemBox.setAttribute("isLink",null);
-                itemBox.style.background = "none";
+                gj(itemBox).removeClass(eXo.UIListView.active);
                 //eXo.core.Browser.setOpacity(itemBox, 85);
               }
              }
@@ -871,7 +872,7 @@
       for(var i in Self.itemsSelected) {
         if (Array.prototype[i]) continue;
         Self.itemsSelected[i].selected = null;
-        Self.itemsSelected[i].style.background = "";
+        gj(Self.itemsSelected[i]).removeClass(eXo.ecm.UIListView.active);
         //eXo.core.Browser.setOpacity(Self.itemsSelected[i], 85);
       }
       Self.itemsSelected = new Array();
