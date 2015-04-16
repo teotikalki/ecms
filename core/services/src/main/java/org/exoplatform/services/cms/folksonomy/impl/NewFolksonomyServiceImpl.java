@@ -526,9 +526,11 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable
    */
   public void removeTag(String tagPath, String workspace) throws Exception {
     Node tagNode = getNode(workspace, tagPath);
-    Node parentNode = tagNode.getParent();
-    tagNode.remove();
-    parentNode.getSession().save();
+    NodeIterator nodeIterator = tagNode.getNodes();
+    while (nodeIterator.hasNext()) {
+      Node document = linkManager.getTarget(nodeIterator.nextNode());
+      removeTagOfDocument(tagPath, document, workspace);
+    }
   }
 
   /**
