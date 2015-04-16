@@ -27,6 +27,7 @@
   def currentPageData = uicomponent.getCurrentPageData();
   def currentPage = uicomponent.getCurrentPage();
   def itemsPerPage = uicomponent.getItemsPerPage();
+  def totalItems = uicomponent.getTotalItem();
   def endItemIndex = (currentPage - 1) * itemsPerPage + currentPageData.size();
   def realCurrentPageData = uicomponent.getRealCurrentPageData();
   def keyword = uicomponent.getKeyword();
@@ -65,7 +66,7 @@
    	 %>
    	   <%
    	   def strResult = "";
-   	   if (currentPageData.size() == 1) {
+   	   if (totalItems == 1) {
    	     strResult = _ctx.appRes("UIDefaultSearchResult.label.oneResult");
    	     strResult = strResult.replace("{0}","<strong>" + keyword + "</strong>");
    	   } else {
