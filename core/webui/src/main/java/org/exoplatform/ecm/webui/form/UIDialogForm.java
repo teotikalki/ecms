@@ -44,6 +44,7 @@ import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.IOUtil;
 import org.exoplatform.download.DownloadService;
@@ -1496,6 +1497,11 @@ public class UIDialogForm extends UIForm {
   }
 
   public void addRichtextField(String name, String label, String[] arguments) throws Exception {
+    if(arguments[0].contains("/node/default.html/jcr:content/jcr:data")){
+      String temp = arguments[arguments.length - 1];
+      temp = StringEscapeUtils.unescapeHtml(temp);
+      arguments[arguments.length - 1] = StringEscapeUtils.unescapeHtml(temp);
+    }
     UIFormRichtextField richtextField = new UIFormRichtextField(name,label,arguments);
     String jcrPath = richtextField.getJcrPath();
     JcrInputProperty inputProperty = new JcrInputProperty();

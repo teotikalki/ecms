@@ -31,6 +31,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.exoplatform.commons.utils.IOUtil;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
@@ -215,12 +216,15 @@ public class DialogFormUtil {
             }
           }
         }
-      }
+      } 
     }
     Iterator iter = properties.values().iterator() ;
     JcrInputProperty property ;
     while (iter.hasNext()) {
       property = (JcrInputProperty) iter.next() ;
+      if("/node/default.html/jcr:content/jcr:data".equals(property.getJcrPath())){
+        property.setValue(StringEscapeUtils.escapeHtml(property.getValue().toString()));
+      }
       rawinputs.put(property.getJcrPath(), property) ;
     }
     for (String jcrPath : mimeTypes.keySet()) {
