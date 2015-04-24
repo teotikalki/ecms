@@ -222,9 +222,6 @@ public class DialogFormUtil {
     JcrInputProperty property ;
     while (iter.hasNext()) {
       property = (JcrInputProperty) iter.next() ;
-      if("/node/default.html/jcr:content/jcr:data".equals(property.getJcrPath())){
-        property.setValue(StringEscapeUtils.escapeHtml(property.getValue().toString()));
-      }
       rawinputs.put(property.getJcrPath(), property) ;
     }
     for (String jcrPath : mimeTypes.keySet()) {
