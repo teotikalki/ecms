@@ -64,8 +64,12 @@ public class UIViewFormTabPane extends UITabPane {
   final static public String POPUP_PERMISSION = "PopupViewPermission" ;
 
   private String selectedTabId = "UITemplateContainer";
+
+  public static final String SAVE_BUTTON    = "Save";
+  public static final String CANCEL_BUTTON  = "Cancel";
+  public static final String RESTORE_BUTTON = "Restore";
   
-  private String[] actions_ = new String[] {"Save", "Cancel", "Restore"};
+  private String[] actions_ = new String[] {SAVE_BUTTON, CANCEL_BUTTON};
   private String primaryBtn_ = "Save";
   
   private boolean isUpdate_ = false;

@@ -25,12 +25,14 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.LazyPageList;
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.commons.utils.ListAccessImpl;
 import org.exoplatform.ecm.webui.core.UIPagingGrid;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
+import org.exoplatform.services.wcm.core.NodetypeConstant;
 import org.exoplatform.services.wcm.utils.WCMCoreUtils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -91,8 +93,16 @@ public class UITabList extends UIPagingGrid {
     UITabContainer uiTabContainer = getParent();
     UIViewFormTabPane uiTabPane = uiTabContainer.getParent();
     UIViewForm uiViewForm = uiTabPane.getChild(UIViewForm.class);
+    UIViewFormTabPane uiViewFormTabPane = uiTabContainer.getParent();
+    ManageViewService viewService = WCMCoreUtils.getService(ManageViewService.class);
+    if(StringUtils.isNotEmpty(viewName)) {
+      Node viewNode = viewService.getViewByName(viewName, WCMCoreUtils.getUserSessionProvider());
+      if (viewNode.isNodeType(NodetypeConstant.MIX_VERSIONABLE)) {
+        uiViewFormTabPane.setActions(new String[]{
+                UIViewFormTabPane.SAVE_BUTTON, UIViewFormTabPane.CANCEL_BUTTON, UIViewFormTabPane.RESTORE_BUTTON});
+      }
+    }
     if(isView_) {
-      ManageViewService viewService = WCMCoreUtils.getService(ManageViewService.class);
       Node viewNode = viewService.getViewByName(viewName, WCMCoreUtils.getUserSessionProvider());
       NodeIterator nodeIter = viewNode.getNodes();
       while(nodeIter.hasNext()) {
