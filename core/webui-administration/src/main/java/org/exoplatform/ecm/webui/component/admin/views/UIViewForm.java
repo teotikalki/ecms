@@ -363,34 +363,37 @@ public class UIViewForm extends UIForm implements UISelectable {
 
     List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
     Node viewNode = NodeLocation.getNodeByLocation(views_);
-    if(views_ == null || !isEnableVersioning) {
-      vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList) ;
-      if(viewNode != null) {
+    if (!isEnableVersioning) {
+      if (views_ == null) {
+        vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList) ;
+      } else {
         for(NodeIterator iter = viewNode.getNodes(); iter.hasNext(); ) {
           Node tab = iter.nextNode() ;
           if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
         }
-        viewNode.save() ;
+        vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList);
       }
     } else {
-      if (!isVersioned(viewNode)) {
+      if (views_ == null){
+        vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList);
+        viewNode = vservice_.getViewByName(viewName, WCMCoreUtils.getSystemSessionProvider());
         viewNode.addMixin(Utils.MIX_VERSIONABLE);
         viewNode.save();
-      } else {
-        viewNode.checkout() ;
-      }
-      for(NodeIterator iter = viewNode.getNodes(); iter.hasNext(); ) {
-        Node tab = iter.nextNode() ;
-        if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
-      }
-      vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList) ;
-      try {
-        viewNode.save() ;
+        viewNode.checkout();
         viewNode.checkin();
-      } catch (Exception e) {
-        UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
-        JCRExceptionManager.process(uiApp, e);
-        return ;
+        viewNode.save();
+      } else {
+        if (!isVersioned(viewNode)) {
+          viewNode.addMixin(Utils.MIX_VERSIONABLE);
+          viewNode.save();
+        }
+        viewNode.checkout();
+        for(NodeIterator iter = viewNode.getNodes(); iter.hasNext(); ) {
+          Node tab = iter.nextNode() ;
+          if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+        }
+        vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList);
+        viewNode.checkin();
       }
     }
     UIViewList uiViewList = getAncestorOfType(UIViewContainer.class).getChild(UIViewList.class);
