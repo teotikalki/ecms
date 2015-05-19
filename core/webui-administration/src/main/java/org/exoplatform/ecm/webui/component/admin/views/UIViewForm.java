@@ -365,11 +365,11 @@ public class UIViewForm extends UIForm implements UISelectable {
     Node viewNode = NodeLocation.getNodeByLocation(views_);
     if (!isEnableVersioning) {
       if (views_ == null) {
-        vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList) ;
+        vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList);
       } else {
         for(NodeIterator iter = viewNode.getNodes(); iter.hasNext(); ) {
-          Node tab = iter.nextNode() ;
-          if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+          Node tab = iter.nextNode();
+          if(!tabMap_.containsKey(tab.getName())) tab.remove();
         }
         vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList);
       }
@@ -381,7 +381,6 @@ public class UIViewForm extends UIForm implements UISelectable {
         viewNode.save();
         viewNode.checkout();
         viewNode.checkin();
-        viewNode.save();
       } else {
         if (!isVersioned(viewNode)) {
           viewNode.addMixin(Utils.MIX_VERSIONABLE);
@@ -389,8 +388,8 @@ public class UIViewForm extends UIForm implements UISelectable {
         }
         viewNode.checkout();
         for(NodeIterator iter = viewNode.getNodes(); iter.hasNext(); ) {
-          Node tab = iter.nextNode() ;
-          if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+          Node tab = iter.nextNode();
+          if(!tabMap_.containsKey(tab.getName())) tab.remove();
         }
         vservice_.addView(viewName, permission, hideExplorerPanel, template, tabList);
         viewNode.checkin();
