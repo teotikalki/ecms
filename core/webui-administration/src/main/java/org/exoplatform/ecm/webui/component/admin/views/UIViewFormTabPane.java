@@ -21,6 +21,12 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
+import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
+import org.exoplatform.services.wcm.core.NodetypeConstant;
+import org.exoplatform.services.wcm.utils.WCMCoreUtils;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
@@ -34,6 +40,8 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputBase;
+
+import javax.jcr.Node;
 
 /**
  * Created by The eXo Platform SARL
@@ -61,6 +69,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
                 
 })
 public class UIViewFormTabPane extends UITabPane {
+  private static final Log logger = ExoLogger.getLogger(UIViewFormTabPane.class.getName());
   final static public String POPUP_PERMISSION = "PopupViewPermission" ;
 
   private String selectedTabId = "UITemplateContainer";
@@ -90,6 +99,18 @@ public class UIViewFormTabPane extends UITabPane {
   }
   
   public String[] getActions() {
+    ManageViewService viewService = WCMCoreUtils.getService(ManageViewService.class);
+    UITabList uiTabList = this.findFirstComponentOfType(UITabList.class);
+    String viewName = uiTabList.getViewName();
+    if(StringUtils.isNotEmpty(viewName)) {
+      try{
+        Node viewNode = viewService.getViewByName(viewName, WCMCoreUtils.getUserSessionProvider());
+        if (viewNode.isNodeType(NodetypeConstant.MIX_VERSIONABLE))
+          actions_ = new String[]{SAVE_BUTTON, CANCEL_BUTTON, RESTORE_BUTTON};
+      }catch (Exception ex){
+        logger.error("View {0} does not exits", viewName);
+      }
+    }
     if(actions_.length == 1) primaryBtn_ = actions_[0];
     return actions_;
   }
