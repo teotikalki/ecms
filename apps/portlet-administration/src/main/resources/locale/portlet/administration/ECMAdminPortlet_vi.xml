@@ -1313,7 +1313,7 @@
   
   <TaxoTreeAnyPermission>
     <label>
-      <any>Bất kỳ Phân quyền nào</any>
+      <any>Cho phép tất cả</any>
       <anyPermission>TaxoTreeAnyPermission</anyPermission>
     </label>
   </TaxoTreeAnyPermission>
@@ -2158,7 +2158,7 @@
   
   <UIAnyPermission>
     <label>
-      <anyPermission>Bất kỳ Phân quyền nào</anyPermission>
+      <anyPermission>Cho phép tất cả</anyPermission>
     </label>
   </UIAnyPermission>
   
