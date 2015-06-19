@@ -1382,8 +1382,8 @@
     <title>Ajouter une permission à ce noeud</title>
     <action>
       <Close>#{word.close}</Close>
-      <Save>Save</Save>
-      <Reset>Reset</Reset>
+      <Save>Enregistrer</Save>
+      <Reset>Réinitialiser</Reset>
     </action>
     <msg>
       <checkbox-require>Vous devez choisir au moins une permission.</checkbox-require>
