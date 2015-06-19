@@ -1382,8 +1382,8 @@
     <title>Thêm phân quyền cho nút</title>
     <action>
       <Close>#{word.close}</Close>
-      <Save>Save</Save>
-      <Reset>Reset</Reset>
+      <Save>Lưu</Save>
+      <Reset>Làm lại</Reset>
     </action>
     <msg>
       <checkbox-require>Vui lòng chọn ít nhất một phân quyền.</checkbox-require>
