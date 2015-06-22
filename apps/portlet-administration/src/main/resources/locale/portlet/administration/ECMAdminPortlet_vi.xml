@@ -87,7 +87,7 @@
 -->
   <UITaxonomyTreeMainForm>
     <action>
-      <Reset>Reset</Reset>
+      <Reset>Làm lại</Reset>
     </action>
     <msg>
       <name-not-allowed>Tên không hợp lệ</name-not-allowed>
