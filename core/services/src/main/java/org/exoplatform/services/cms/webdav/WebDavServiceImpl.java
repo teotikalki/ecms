@@ -467,7 +467,7 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
         // Since ECMS-6474:
         // Windows webdav calls *put* function twice during uploading a file.
         // As the result, this node must be in creating list of nodes during those calls.
-        if (userAgent.contains("Microsoft")) {
+        if (userAgent != null && userAgent.contains("Microsoft")) {
           activityService.setCreating(currentNode, true);
         }
       } else {
