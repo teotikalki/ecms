@@ -32,22 +32,27 @@ import org.exoplatform.webui.form.validator.Validator;
 public class ECMNameValidator implements Validator {
 
   public void validate(UIFormInput uiInput) throws Exception {
-    if (uiInput.getValue()==null || ((String)uiInput.getValue()).trim().length()==0) return;
-    UIComponent uiComponent = (UIComponent) uiInput ;
-    UIForm uiForm = uiComponent.getAncestorOfType(UIForm.class) ;
+    if (uiInput.getValue() == null || ((String) uiInput.getValue()).trim().length() == 0) return;
+    UIComponent uiComponent = (UIComponent) uiInput;
+    UIForm uiForm = uiComponent.getAncestorOfType(UIForm.class);
     String label;
-    try{
+    try {
       label = uiForm.getLabel(uiInput.getName());
-    } catch(Exception e) {
+    } catch (Exception e) {
       label = uiInput.getName();
     }
     label = label.trim();
-    if(label.charAt(label.length() - 1) == ':') label = label.substring(0, label.length() - 1);
-    String s = (String)uiInput.getValue();
-    if(s == null || s.trim().length() == 0) {
-      Object[] args = { uiInput.getLabel() };
-      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, ApplicationMessage.WARNING)) ;
+    if (label.charAt(label.length() - 1) == ':') label = label.substring(0, label.length() - 1);
+    String s = (String) uiInput.getValue();
+    if (s == null || s.trim().length() == 0) {
+      Object[] args = {uiInput.getLabel()};
+      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, ApplicationMessage.WARNING));
     }
+    if (s.length() == 1)
+      if (s.equals(".")) {
+        Object[] args = {label};
+        throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING));
+      }
     // Reject line terminators
     if ((s.toLowerCase().contains("%0a")) || (s.toLowerCase().contains("%0d"))) {
       Object[] args = {label};
