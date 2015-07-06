@@ -26,7 +26,7 @@ import org.exoplatform.webui.form.validator.Validator;
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
- *          minh.dang@exoplatform.com
+ * minh.dang@exoplatform.com
  * May 8, 2008 3:50:44 PM
  */
 public class ECMNameValidator implements Validator {
@@ -48,19 +48,20 @@ public class ECMNameValidator implements Validator {
       Object[] args = { uiInput.getLabel() };
       throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, ApplicationMessage.WARNING)) ;
     }
-    if(s.length() == 1)
-      if(s.equals(".")){
-        Object[] args = { label };
-        throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING)) ;
+    // Reject line terminators
+    if ((s.toLowerCase().contains("%0a")) || (s.toLowerCase().contains("%0d"))) {
+      Object[] args = {label};
+      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING));
+    } else {
+      for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (Character.isLetter(c) || Character.isDigit(c) || Character.isSpaceChar(c) || c == '_'
+                || c == '-' || c == '.' || c == ':' || c == '@' || c == '^' || c == '[' || c == ']' || c == ',' || c == '%' || c == '\'') {
+          continue;
+        }
+        Object[] args = {label};
+        throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING));
       }
-    for(int i = 0; i < s.length(); i ++){
-      char c = s.charAt(i);
-      if(Character.isLetter(c) || Character.isDigit(c) || Character.isSpaceChar(c) || c=='_'
-        || c=='-' || c=='.' || c=='@' || c=='^' || c==',' || c=='\'') {
-        continue ;
-      }
-      Object[] args = { label };
-      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING)) ;
     }
   }
 }
