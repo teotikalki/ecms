@@ -349,7 +349,7 @@ public class FileUploadHandler {
    *
    * @throws Exception the exception
    */
-  public Response saveAsNTFile(Node parent,
+  public synchronized Response saveAsNTFile(Node parent,
                                String uploadId,
                                String fileName,
                                String language,
