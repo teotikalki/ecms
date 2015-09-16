@@ -16,11 +16,13 @@
  */
 package org.exoplatform.services.wcm.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.jcr.Node;
@@ -43,6 +45,8 @@ import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.config.UserACL;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -117,6 +121,9 @@ public class SiteSearchServiceImpl implements SiteSearchService {
   
   /** The log. */
   private static final Log LOG = ExoLogger.getLogger(SiteSearchServiceImpl.class.getName());
+  
+  private ExoCache<String, Map<?, Integer>> foundNodeCache;
+  private ExoCache<String, Map<Integer, Integer>> dropNodeCache;
 
   /**
    * Instantiates a new site search service impl.
@@ -133,11 +140,14 @@ public class SiteSearchServiceImpl implements SiteSearchService {
                                TemplateService templateService,
                                WCMConfigurationService configurationService,
                                RepositoryService repositoryService,
+                               CacheService caService,
                                InitParams initParams) throws Exception {
     this.livePortalManagerService = portalManagerService;
     this.templateService = templateService;
     this.repositoryService = repositoryService;
     this.configurationService = configurationService;
+    this.foundNodeCache = caService.getCacheInstance(SiteSearchService.class.getSimpleName());
+    this.dropNodeCache = caService.getCacheInstance(SiteSearchService.class.getSimpleName());
     if (initParams != null) {
       ValueParam isEnabledFuzzySearchValue = initParams.getValueParam(IS_ENABLED_FUZZY_SEARCH);
       if (isEnabledFuzzySearchValue != null)
@@ -250,7 +260,7 @@ public class SiteSearchServiceImpl implements SiteSearchService {
   private Query createSearchPageQuery(QueryCriteria queryCriteria, QueryManager queryManager) throws Exception {
     SQLQueryBuilder queryBuilder = new SQLQueryBuilder();
     List<String> mopPages = this.searchPageByTitle(queryCriteria.getSiteName(),
-                                                   queryCriteria.getKeyword());
+            queryCriteria.getKeyword());
     if (mopPages.size() == 0) {
       return null;
     }
@@ -302,10 +312,10 @@ public class SiteSearchServiceImpl implements SiteSearchService {
       LOG.debug("execute query: " + query.getStatement().toLowerCase());
     }
     List<String> pageList = PageListFactory.createPageList(query.getStatement(),
-                                                           session.getWorkspace().getName(),
-                                                           query.getLanguage(),
-                                                           true,
-                                                           new PageTitleDataCreator());
+            session.getWorkspace().getName(),
+            query.getLanguage(),
+            true,
+            new PageTitleDataCreator());
     return pageList;
   }
   
@@ -327,7 +337,7 @@ public class SiteSearchServiceImpl implements SiteSearchService {
 
     mapQueryPath(queryCriteria, queryBuilder);
 
-    queryCriteria.setFulltextSearchProperty(new String[] {"gtn:name"});
+    queryCriteria.setFulltextSearchProperty(new String[]{"gtn:name"});
 
     mapFulltextQueryTearm(queryCriteria, queryBuilder, LOGICAL.OR);
 
@@ -764,6 +774,7 @@ public class SiteSearchServiceImpl implements SiteSearchService {
     @Override
     public Node filterNodeToDisplay(Node node) {
       try {
+        if (node == null || node.getPath().contains("/jcr:system/")) return null;
         Node displayNode = getNodeToCheckState(node);
         if(displayNode == null) return null;
         if (isSearchContent) return displayNode;
@@ -780,7 +791,7 @@ public class SiteSearchServiceImpl implements SiteSearchService {
         return null;
       }
     }
-    
+
     protected Node getNodeToCheckState(Node node)throws Exception{
       Node displayNode = node;
       if (displayNode.isNodeType("nt:resource")) {
@@ -789,18 +800,19 @@ public class SiteSearchServiceImpl implements SiteSearchService {
       //return exo:webContent when exo:htmlFile found
       if (displayNode.isNodeType("exo:htmlFile")) {
         Node parent = displayNode.getParent();
-        if (parent.isNodeType("exo:webContent")) return parent;
-        return displayNode;
+        if (parent.isNodeType("exo:webContent")) {
+          displayNode = parent;
+        }
       }
-     String[] contentTypes = queryCriteria.getContentTypes();
+      String[] contentTypes = queryCriteria.getContentTypes();
       for (String contentType : contentTypes) {
         if(displayNode.isNodeType(contentType)) {
           return displayNode;
         }
-      }     
+      }
       return null;
     }
-    
+
   }
   
   /**
@@ -932,4 +944,33 @@ public class SiteSearchServiceImpl implements SiteSearchService {
     }
     
   }
+
+  @Override
+  public Map<?, Integer> getFoundNodes(String userId, String queryStatement) {
+    String key = new StringBuilder('(').append(userId).append(';').append(queryStatement).append(')').toString();
+    Map<?, Integer> ret = foundNodeCache.get(key);
+    if (ret == null) { 
+      ret = new HashMap<Integer, Integer>();
+      foundNodeCache.put(key, ret);
+    };
+    return ret;
+  }
+  
+  @Override
+  public Map<Integer, Integer> getDropNodes(String userId, String queryStatement) {
+    String key = new StringBuilder('(').append(userId).append(';').append(queryStatement).append(')').toString();
+    Map<Integer, Integer> ret = dropNodeCache.get(key);
+    if (ret == null) { 
+      ret = new HashMap<Integer, Integer>();
+      dropNodeCache.put(key, ret);
+    };
+    return ret;
+  }
+  
+  public void clearCache(String userId, String queryStatement) {
+    String key = new StringBuilder('(').append(userId).append(';').append(queryStatement).append(')').toString();
+    foundNodeCache.remove(key);
+    dropNodeCache.remove(key);
+  }
+  
 }
