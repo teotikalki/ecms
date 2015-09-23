@@ -98,6 +98,11 @@
       <SelectTargetPage>نمایش در صفحه</SelectTargetPage>
     </title>
   </UISCVConfigPrintPageFormInputSet>
+  <UISCVConfigPrintPageSelectorPopupWindow>
+    <title>
+      <UIPageSelector>Page Selector</UIPageSelector>
+    </title>
+  </UISCVConfigPrintPageSelectorPopupWindow>
   <PublicationStates>
     <archived>آرشیو شده</archived>
     <obsolete>منسوخ</obsolete>
