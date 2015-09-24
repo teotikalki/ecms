@@ -100,7 +100,7 @@
   </UISCVConfigPrintPageFormInputSet>
   <UISCVConfigPrintPageSelectorPopupWindow>
     <title>
-      <UIPageSelector>Page Selector</UIPageSelector>
+      <UIPageSelector>Selector de pàgina</UIPageSelector>
     </title>
   </UISCVConfigPrintPageSelectorPopupWindow>
   <PublicationStates>
