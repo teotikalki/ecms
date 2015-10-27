@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 import javax.annotation.security.RolesAllowed;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.http.HttpServletRequest;
@@ -891,6 +892,14 @@ public class DriverConnector extends BaseConnector implements ResourceContainer 
       CacheControl cacheControl = new CacheControl();
       cacheControl.setNoCache(true);
       return fileUploadHandler.saveAsNTFile(currentFolderNode, uploadId, fileName, language, siteName, userId, existenceAction);
+    } else if (FileUploadHandler.ABORT_ACTION.equals(action)) {
+    	try {
+    		if(currentFolderNode != null){
+    			currentFolderNode.getNode(fileName).remove();
+    			currentFolderNode.save();
+    			LOG.info("Remove temporary node when uploading " + fileName);
+    		}
+    	} catch(PathNotFoundException e){} //don't find temporary file, do nothing
     }
     return fileUploadHandler.control(uploadId, action);
   }
