@@ -26,6 +26,7 @@
 		this.initPathExpanded ="";
 		this.initComponentIdExpanded ="";
 		this.deleteConfirmationMsg="";
+		this.itemPerPage = 8;
 	  this.switchView = false;
 	  if(this.viewType==undefined)
 			this.viewType="list";
@@ -577,7 +578,7 @@
 			var strViewContent = "";
 			// Depends on Paginators will be used or not. 'longDesc' if paginator, 'src' else.
 			var imageAttribute = "src";
-                       	if(list.length > 8) {
+                       	if(list.length > ECS.itemPerPage) {
 				// Paginator will be used
 				imageAttribute = "longDesc";
 			}			
@@ -614,8 +615,8 @@
 			}			
 		}	
 		if(viewType=="list") {
-			if(i > 9) {
-				var numberRecords = 9;		
+			if(i > ECS.itemPerPage) {
+				var numberRecords = ECS.itemPerPage;		
 				var viewType = eXo.ecm.ECS.viewType; 
 				eXo.ecm.Pager = new Pager("ListRecords", numberRecords);
 				eXo.ecm.Pager.init(); 
@@ -626,8 +627,8 @@
 			}
 		}
 		else {
-			if(i > 8) {
-				var numberRecords = 8;		
+			if(i > ECS.itemPerPage) {
+				var numberRecords = ECS.itemPerPage;		
 				var viewType = eXo.ecm.ECS.viewType; 
 				eXo.ecm.Pager = new Pager("ActionIconsContainer", numberRecords);
 				eXo.ecm.Pager.init(); 
@@ -690,8 +691,8 @@
 					
 		}
 		
-		if(i > 9) {
-			var numberRecords = 9;
+		if(i > ECS.itemPerPage) {
+			var numberRecords = ECS.itemPerPage;
 			eXo.ecm.Pager = new Pager("ListRecords", numberRecords);
 			eXo.ecm.Pager.init(); 
 			eXo.ecm.Pager.showPageNav('pageNavPosition');
@@ -732,8 +733,8 @@
 					
 		}
 		
-		if(i > 9) {
-			var numberRecords = 9;
+		if(i > ECS.itemPerPage) {
+			var numberRecords = ECS.itemPerPage;
 	    eXo.ecm.Pager = new Pager("ListRecords", numberRecords);
 			eXo.ecm.Pager.init(); 
 			eXo.ecm.Pager.showPageNav('pageNavPosition');
@@ -836,7 +837,7 @@
 				}
 			}    
 		}
-		if(len <= 8) { gj("#pageNavPosition").html(""); return;}
+		if(len <= eXo.ecm.ECS.itemPerPage) { gj("#pageNavPosition").html(""); return;}
 	};
 	
 	Pager.prototype.showPage = function(pageNumber) {
