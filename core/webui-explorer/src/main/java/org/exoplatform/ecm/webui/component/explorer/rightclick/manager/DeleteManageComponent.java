@@ -198,8 +198,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
         TrashService trashService = WCMCoreUtils.getService(TrashService.class);
         node = trashService.getNodeByTrashId(trashId);
         if(!isDocumentNodeType(node) 
-        		&& !node.getPrimaryNodeType().getName().equals(NodetypeConstant.NT_FILE)
-        		&& !node.isNodeType(NodetypeConstant.EXO_SYMLINK)){
+        		&& !node.getPrimaryNodeType().getName().equals(NodetypeConstant.NT_FILE)){
           Queue<Node> queue = new LinkedList<Node>();
           queue.add(node);
 
