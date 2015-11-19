@@ -149,12 +149,12 @@ public class TrashServiceImpl implements TrashService {
     ListenerService listenerService =  WCMCoreUtils.getService(ListenerService.class);
     //listenerService.broadcast(ActivityCommonService.FILE_REMOVE_ACTIVITY, null, node);
     if (node.getPrimaryNodeType().getName().equals(NodetypeConstant.NT_FILE) || node.isNodeType(NodetypeConstant.EXO_SYMLINK)) {
-    	ActivityCommonService activityService = WCMCoreUtils.getService(ActivityCommonService.class);
-    	if (activityService.isBroadcastNTFileEvents(node)) {
-    		listenerService.broadcast(ActivityCommonService.FILE_REMOVE_ACTIVITY, null, node);
-    	}
+      ActivityCommonService activityService = WCMCoreUtils.getService(ActivityCommonService.class);
+      if (activityService.isBroadcastNTFileEvents(node)) {
+        listenerService.broadcast(ActivityCommonService.FILE_REMOVE_ACTIVITY, null, node);
+      }
     } else{
-    	listenerService.broadcast(ActivityCommonService.FILE_REMOVE_ACTIVITY, null, node);
+      listenerService.broadcast(ActivityCommonService.FILE_REMOVE_ACTIVITY, null, node);
     }
     String originalPath = node.getPath();
     String nodeWorkspaceName = nodeSession.getWorkspace().getName();
