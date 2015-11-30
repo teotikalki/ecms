@@ -656,6 +656,8 @@ public class Utils {
           cleanedStr.setCharAt(i, c);
         }
         continue;
+      } else if (c == '_') {
+        continue;
       }
       if(i > 0 && !(Character.isLetterOrDigit(c) || c == '-')) {
         cleanedStr.deleteCharAt(i--);
