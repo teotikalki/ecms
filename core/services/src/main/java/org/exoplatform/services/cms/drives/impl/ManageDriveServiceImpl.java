@@ -38,6 +38,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -526,13 +527,10 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     }
     if(flag){
       for (String role : userRoles) {
-        String group = role.substring(role.indexOf(":")+1);
+        String group = role.substring(role.indexOf(":")+1);        
         if (groupDriveTemplate_ != null && group.charAt(0)=='/') {
-          DriveData drive = groupDriveTemplate_.clone();
-          drive.setHomePath(groupDriveTemplate_.getHomePath().replace("${groupId}", group));
-          drive.setName(group.replace("/", "."));
-          drive.setPermissions("*:"+group);
-          if (!groupDrives.contains(drive))
+          DriveData drive = getDriveByName(group.replace("/", "."));
+          if (drive != null && !groupDrives.contains(drive))
             groupDrives.add(drive);
         }
       }
