@@ -923,6 +923,7 @@ public class UICLVConfig extends UIFormTabPane  implements UISelectable {
           portlet.updatePortlet();
         }
       }
+      event.getRequestContext().addUIComponentToUpdateByAjax(portlet);
     }
   }
 
