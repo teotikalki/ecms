@@ -54,6 +54,7 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.pdfviewer.ObjectKey;
 import org.exoplatform.services.pdfviewer.PDFViewerService;
+import org.exoplatform.services.pdfviewer.PDFViewerListener;
 import org.exoplatform.services.rest.resource.ResourceContainer;
 import org.exoplatform.services.wcm.utils.WCMCoreUtils;
 import org.icepdf.core.exceptions.PDFException;
@@ -91,6 +92,8 @@ public class PDFViewerRESTService implements ResourceContainer {
     }else{
       pdfCache = caService.getCacheInstance(PDFViewerRESTService.class.getName());
     }
+    PDFViewerListener pdfViewerListener = new PDFViewerListener();
+    pdfCache.addCacheListener(pdfViewerListener);
   }
 
   /**
@@ -283,11 +286,6 @@ public class PDFViewerRESTService implements ResourceContainer {
      File file = null;
      try {
        file= File.createTempFile("imageCapture1_" + pageNum,".png");
-       /*
-       file.deleteOnExit();
-         PM Comment : I removed this line because each deleteOnExit creates a reference in the JVM for future removal
-         Each JVM reference takes 1KB of system memory and leads to a memleak
-       */
        ImageIO.write(rendImage, "png", file);
      } catch (IOException e) {
        if (LOG.isErrorEnabled()) {
@@ -341,11 +339,6 @@ public class PDFViewerRESTService implements ResourceContainer {
       // cut the file name if name is too long, because OS allows only file with name < 250 characters
       name = reduceFileNameSize(name);
       content = File.createTempFile(name + "_tmp", ".pdf");
-      /*
-      file.deleteOnExit();
-        PM Comment : I removed this line because each deleteOnExit creates a reference in the JVM for future removal
-        Each JVM reference takes 1KB of system memory and leads to a memleak
-      */
       // Convert to pdf if need
       String extension = DMSMimeTypeResolver.getInstance().getExtension(mimeType);
       if ("pdf".equals(extension)) {

@@ -26,9 +26,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.jcr.Node;
-
 import org.artofsolving.jodconverter.office.OfficeException;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
@@ -39,6 +37,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.icepdf.core.pobjects.Document;
+import org.picocontainer.Startable;
+
 /**
  * Created by The eXo Platform SAS
  * Author : Nguyen The Vinh From ECM Of eXoPlatform
@@ -46,7 +46,7 @@ import org.icepdf.core.pobjects.Document;
  * 6 Jul 2012  
  */
 
-public class PDFViewerService {
+public class PDFViewerService implements Startable {
   private static final int MAX_NAME_LENGTH= 150;
   private static final Log LOG  = ExoLogger.getLogger(PDFViewerService.class.getName());
   private JodConverterService jodConverter_;
@@ -55,11 +55,15 @@ public class PDFViewerService {
   public static final long MAX_PAGES = 99;
 
 
-  public PDFViewerService(RepositoryService repositoryService,
+
+    public PDFViewerService(RepositoryService repositoryService,
                           CacheService caService,
                           JodConverterService jodConverter) throws Exception {
     jodConverter_ = jodConverter;
     pdfCache = caService.getCacheInstance(PDFViewerService.class.getName());
+    PDFViewerListener pdfViewerListener = new PDFViewerListener();
+    pdfCache.addCacheListener(pdfViewerListener);
+
   }
   public ExoCache<Serializable, Object> getCache() {
     return pdfCache;
@@ -130,8 +134,7 @@ public class PDFViewerService {
       // cut the file name if name is too long, because OS allows only file with name < 250 characters
       name = reduceFileNameSize(name);
       content = File.createTempFile(name + "_tmp", ".pdf");
-
-      // Convert to pdf if need
+        // Convert to pdf if need
       String extension = DMSMimeTypeResolver.getInstance().getExtension(mimeType);
       if ("pdf".equals(extension)) {
         read(input, new BufferedOutputStream(new FileOutputStream(content)));
@@ -201,4 +204,29 @@ public class PDFViewerService {
     os.flush();
     os.close();
   }
+
+    @Override
+    public void start() {
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("PDFViewerService is started");
+            }
+        } catch (Exception e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Exception when PDFViewerService is started", e);
+            }
+        }
+    }
+
+
+    @Override
+    public void stop() {
+        try {
+            pdfCache.clearCache();
+        } catch (Exception e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Exception when PDFViewerService is stopped", e);
+            }
+        }
+    }
 }
