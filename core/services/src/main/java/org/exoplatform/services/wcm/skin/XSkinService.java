@@ -192,10 +192,7 @@ public class XSkinService implements Startable {
    */
   public void start() {
     final RootContainer.PortalContainerPostCreateTask task = new RootContainer.PortalContainerPostCreateTask() {
-
       public void execute(ServletContext context, PortalContainer portalContainer) {
-
-
         SessionProvider sessionProvider = SessionProvider.createSystemProvider();
         try {
           LivePortalManagerService livePortalManagerService = WCMCoreUtils.getService(LivePortalManagerService.class);
@@ -212,14 +209,8 @@ public class XSkinService implements Startable {
         } finally {
           sessionProvider.close();
         }
-
-
       }
     };
-
-
-
-
 
     RootContainer rootContainer = RootContainer.getInstance();
     rootContainer.addInitTask(servletContext, task);
