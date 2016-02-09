@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -38,7 +37,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
-
 import org.apache.commons.lang.StringUtils;
 import org.artofsolving.jodconverter.office.OfficeException;
 import org.exoplatform.services.cache.CacheService;
@@ -54,7 +52,6 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.pdfviewer.ObjectKey;
 import org.exoplatform.services.pdfviewer.PDFViewerService;
-import org.exoplatform.services.pdfviewer.PDFViewerListener;
 import org.exoplatform.services.rest.resource.ResourceContainer;
 import org.exoplatform.services.wcm.utils.WCMCoreUtils;
 import org.icepdf.core.exceptions.PDFException;
@@ -79,21 +76,17 @@ public class PDFViewerRESTService implements ResourceContainer {
   private RepositoryService repositoryService_;
   private ExoCache<Serializable, Object> pdfCache;
   private JodConverterService jodConverter_;
+  private PDFViewerService pdfViewerService_;
   private static final Log LOG  = ExoLogger.getLogger(PDFViewerRESTService.class.getName());
 
   public PDFViewerRESTService(RepositoryService repositoryService,
                               CacheService caService,
-                              JodConverterService jodConverter) throws Exception {
+                              JodConverterService jodConverter,
+                              PDFViewerService pdfViewerService) throws Exception {
     repositoryService_ = repositoryService;
     jodConverter_ = jodConverter;
-    PDFViewerService pdfViewerService = WCMCoreUtils.getService(PDFViewerService.class);
-    if(pdfViewerService != null){
-      pdfCache = pdfViewerService.getCache();
-    }else{
-      pdfCache = caService.getCacheInstance(PDFViewerRESTService.class.getName());
-    }
-    PDFViewerListener pdfViewerListener = new PDFViewerListener();
-    pdfCache.addCacheListener(pdfViewerListener);
+    pdfViewerService_ = pdfViewerService;
+    pdfCache = pdfViewerService_.getCache();
   }
 
   /**

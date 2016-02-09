@@ -207,14 +207,8 @@ public class PDFViewerService implements Startable {
 
     @Override
     public void start() {
-        try {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("PDFViewerService is started");
-            }
-        } catch (Exception e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Exception when PDFViewerService is started", e);
-            }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("PDFViewerService is started");
         }
     }
 
