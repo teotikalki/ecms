@@ -148,7 +148,7 @@ public class ResultNode implements Node{
    * @return the excerpt
    */
   public String getExcerpt() {
-	excerpt = StringEscapeUtils.unescapeHtml(excerpt);
+	excerpt = StringEscapeUtils.unescapeHtml(excerpt).replaceAll("<div><span>.*<em>", "");
     return excerpt;
   }
 
