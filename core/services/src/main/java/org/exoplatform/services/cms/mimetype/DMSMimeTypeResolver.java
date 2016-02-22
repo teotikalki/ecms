@@ -17,11 +17,15 @@
  **************************************************************************/
 package org.exoplatform.services.cms.mimetype;
 
+import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.container.configuration.ConfigurationManager;
+import org.exoplatform.services.wcm.utils.WCMCoreUtils;
+
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.Properties;
-
-import org.exoplatform.commons.utils.MimeTypeResolver;
 
 /**
  * Created by The eXo Platform SARL
@@ -37,10 +41,22 @@ public class DMSMimeTypeResolver {
 
   private static DMSMimeTypeResolver dmsMimeTypeResolver;
 
+  private Properties DmimeTypes = new Properties();
+
 
   private DMSMimeTypeResolver() throws IOException {
-    dmsmimeTypes.load(getClass().getResourceAsStream("/conf/mimetype/mimetypes.properties"));
+    ConfigurationManager configurationService = WCMCoreUtils.getService(ConfigurationManager.class);
+    URL filePath = null;
+    try {
+      filePath = configurationService.getURL("war:/conf/wcm-core/mimetype/mimetypes.properties");
+      URLConnection connection = filePath.openConnection();
+      DmimeTypes.load(connection.getInputStream());
+      } catch (Exception e) {
+        //load the default mimetype.properties
+        dmsmimeTypes.load(getClass().getResourceAsStream("/conf/mimetype/mimetypes.properties"));
+      }
   }
+
 
   public static DMSMimeTypeResolver getInstance() throws IOException {
     if (dmsMimeTypeResolver == null) {
