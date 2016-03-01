@@ -41,7 +41,6 @@ public class DMSMimeTypeResolver {
 
   private static DMSMimeTypeResolver dmsMimeTypeResolver;
 
-  private Properties DmimeTypes = new Properties();
 
 
   private DMSMimeTypeResolver() throws IOException {
@@ -50,7 +49,7 @@ public class DMSMimeTypeResolver {
     try {
       filePath = configurationService.getURL("war:/conf/wcm-core/mimetype/mimetypes.properties");
       URLConnection connection = filePath.openConnection();
-      DmimeTypes.load(connection.getInputStream());
+      dmsmimeTypes.load(connection.getInputStream());
       } catch (Exception e) {
         //load the default mimetype.properties
         dmsmimeTypes.load(getClass().getResourceAsStream("/conf/mimetype/mimetypes.properties"));
