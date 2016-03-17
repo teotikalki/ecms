@@ -191,6 +191,10 @@ public class XSkinService implements Startable {
    * @see org.picocontainer.Startable#start()
    */
   public void start() {
+    /*
+     XSkinService and SkinService are running concurrently and we need to execute the XSkinService at the end.git
+     Using the PortalContainerPostCreateTask is the only way to wait until all available skins are loaded.
+     */
     final RootContainer.PortalContainerPostCreateTask task = new RootContainer.PortalContainerPostCreateTask() {
       public void execute(ServletContext context, PortalContainer portalContainer) {
         SessionProvider sessionProvider = SessionProvider.createSystemProvider();
