@@ -192,7 +192,7 @@ public class XSkinService implements Startable {
    */
   public void start() {
     /*
-     XSkinService and SkinService are running concurrently and we need to execute the XSkinService at the end.git
+     XSkinService and SkinService are running concurrently and we need to execute the XSkinService at the end of that cycle.
      Using the PortalContainerPostCreateTask is the only way to wait until all available skins are loaded.
      */
     final RootContainer.PortalContainerPostCreateTask task = new RootContainer.PortalContainerPostCreateTask() {
