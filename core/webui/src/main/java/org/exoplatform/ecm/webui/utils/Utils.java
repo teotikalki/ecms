@@ -31,22 +31,20 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipInputStream;
-
 import javax.imageio.ImageIO;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-import javax.jcr.Value;
 import javax.jcr.Session;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.ExoContainer;
@@ -57,7 +55,6 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.form.UIOpenDocumentForm;
 import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -86,10 +83,7 @@ import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.UIExtension;
 import org.exoplatform.webui.ext.UIExtensionManager;
-import java.util.Iterator;
-import org.exoplatform.services.resources.LocaleConfig;
-import org.exoplatform.services.resources.LocaleConfigService;
-import org.exoplatform.webui.core.model.SelectItemOption;
+import org.exoplatform.commons.utils.StringCommonUtils;
 
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
@@ -745,16 +739,15 @@ public class Utils {
         if (orgNode.getProperty(propertyName).getDefinition().isMultiple()) {
           //The requested property is multiple-valued, inline editing enable users to edit the first value of property        
           propertyValue = orgNode.getProperty(propertyName).getValues()[0].getString();
-          propertyValue = ContentReader.simpleEscapeHtml(propertyValue);
         } else {
           propertyValue = orgNode.getProperty(propertyName).getString();	
         }
         if (org.exoplatform.wcm.webui.Utils.getCurrentMode().equals(WCMComposer.MODE_LIVE))
-          return StringUtils.replace(propertyValue,"{portalName}",siteName);
+        return StringCommonUtils.encodeScriptMarkup(org.exoplatform.services.deployment.Utils.sanitize(StringUtils.replace(propertyValue, "{portalName}", siteName)));
         else
           return "<div class=\"WCMInlineEditable\" contenteditable=\"true\" propertyName=\""+propertyName+"\" repo=\""+repo+"\" workspace=\""+workspace+"\"" +
-        			" uuid=\""+uuid+"\" siteName=\""+siteName+"\" publishedMsg=\""+published+"\" draftMsg=\""+draft+"\" fastpublishlink=\""+publishLink+"\" language=\""+language+"\" >" + 
-        			propertyValue + "</div>";      
+                  " uuid=\""+uuid+"\" siteName=\""+siteName+"\" publishedMsg=\""+published+"\" draftMsg=\""+draft+"\" fastpublishlink=\""+publishLink+"\" language=\""+language+"\" >" +
+                   StringCommonUtils.encodeScriptMarkup(org.exoplatform.services.deployment.Utils.sanitize(propertyValue)) + "</div>";
       } catch (Exception e) {
       	if (org.exoplatform.wcm.webui.Utils.getCurrentMode().equals(WCMComposer.MODE_LIVE))
           return currentValue;
