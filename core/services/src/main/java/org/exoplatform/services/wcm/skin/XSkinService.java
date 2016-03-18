@@ -91,6 +91,10 @@ public class XSkinService implements Startable {
    * @param repositoryService the repository service
    * @throws Exception the exception
    */
+  /**
+   * We inject wcmContentInitializerService first so that all moduleName are loaded before the constructor is called.
+   * we use those modules to generate the CSS URL.
+   */
   public XSkinService(LivePortalManagerService livePortalService, WCMContentInitializerService wcmContentInitializerService) throws Exception {
     this.skinService = WCMCoreUtils.getService(SkinService.class);
     this.skinService.addResourceResolver(new WCMSkinResourceResolver(this.skinService, livePortalService));
