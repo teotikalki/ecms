@@ -298,7 +298,7 @@ public class UIDocumentNodeList extends UIContainer {
    */
   public String getVersionNumber(Node file) throws Exception {
     if (file.isNodeType(NodetypeConstant.MIX_VERSIONABLE)) {
-	  int size = (int)file.getVersionHistory().getAllVersions().getSize()-1;
+      int size = (int)file.getVersionHistory().getAllVersions().getSize()-1;
       return "V" + size;
     } else {
       return "";

@@ -31,7 +31,7 @@
 		  }
 		  label.append("</label>") ;
 		  
-		  String show = "Version: " + node.getName() + " " + label.toString();
+            String show = _ctx.appRes("UIVersionInfo.tooltip.version") + " : " + node.getName() + " " + label.toString();
 			String dateCreated = node.getCreatedTime().getTime().toString();
 			String titleLable = displayLabel.toString();
 			println """
@@ -74,8 +74,8 @@
 				String clazz = "" ;
 				VersionNode rootNode = uicomponent.getRootVersionNode();
 				String baseVersion = "" ;
-				baseVersion = " (Base Version)";
-                String show1 = "Version: " + "0" + baseVersion;
+                baseVersion = " (" + _ctx.appRes("UIVersionInfo.tooltip.baseVersion") + ")";
+                String show1 = _ctx.appRes("UIVersionInfo.tooltip.version") + " : " + "0" + baseVersion;
                 println """
                   <tr><td>$show1</td>
                 """;
@@ -85,7 +85,7 @@
                 println "<a class=\"actionIcon\" onclick=\"" + uicomponent.event("AddLabel",   rootNode.getPath()) + "\" rel=\"tooltip\" data-placement=\"bottom\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.addLabel") + "\"><i class=\"uiIconPlus uiIconLightGray\"></i></a>" ;
                 println "<a class=\"actionIcon\" onclick=\"" + uicomponent.event("ViewVersion",   rootNode.getPath()) + "\" rel=\"tooltip\" data-placement=\"bottom\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.viewVersion") + "\"><i class=\"uiIconPreview uiIconLightGray\"></i></a>" ;
                 println "</tr>" ;
-				writeNodes(rootNode.getChildren(), clazz, 1);
+                writeNodes(rootNode.getChildren(), clazz, 1);
 			%>
 		</table>
 	</div>
