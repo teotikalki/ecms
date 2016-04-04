@@ -16,21 +16,6 @@
  */
 package org.exoplatform.services.pdfviewer;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.jcr.Node;
-
 import org.artofsolving.jodconverter.office.OfficeException;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
@@ -43,6 +28,11 @@ import org.exoplatform.services.log.Log;
 import org.icepdf.core.exceptions.PDFException;
 import org.icepdf.core.exceptions.PDFSecurityException;
 import org.icepdf.core.pobjects.Document;
+
+import javax.jcr.Node;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * Created by The eXo Platform SAS
  * Author : Nguyen The Vinh From ECM Of eXoPlatform
@@ -130,7 +120,10 @@ public class PDFViewerService {
     Node contentNode = currentNode.getNode("jcr:content");
     
     String lastModified = Utils.getJcrContentLastModified(currentNode);
-    if (path == null || !(content = new File(path)).exists() || !lastModified.equals(lastModifiedTime)) {
+    if (path == null
+            || !(content = new File(path)).exists()
+            || !lastModified.equals(lastModifiedTime)
+            || (content.length() != contentNode.getProperty("jcr:data").getLength())) {
       String mimeType = contentNode.getProperty("jcr:mimeType").getString();
       InputStream input = new BufferedInputStream(contentNode.getProperty("jcr:data").getStream());
       // Create temp file to store converted data of nt:file node
@@ -169,7 +162,9 @@ public class PDFViewerService {
       if (content.exists()) {
         if (contentNode.hasProperty("jcr:lastModified")) {
           pdfCache.put(new ObjectKey(bd.toString()), content.getPath());
-          pdfCache.put(new ObjectKey(bd1.toString()), lastModified);
+          contentNode.setProperty("jcr:lastModified", content.lastModified());
+          contentNode.save();
+          pdfCache.put(new ObjectKey(bd1.toString()), Utils.getJcrContentLastModified(currentNode));
         }
       }
     }
