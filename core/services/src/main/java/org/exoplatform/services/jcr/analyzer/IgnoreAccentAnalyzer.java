@@ -32,7 +32,7 @@ import org.apache.lucene.util.Version;
  *          chien.nguyen@exoplatform.com
  * Jul 19, 2010
  */
-public class IgnoreAccentAnalyzer extends Analyzer {
+public final class IgnoreAccentAnalyzer extends Analyzer {
 
   public TokenStream tokenStream(String fieldName, Reader reader) {
     TokenStream result = new WhitespaceTokenizer(Version.LUCENE_35, reader);
