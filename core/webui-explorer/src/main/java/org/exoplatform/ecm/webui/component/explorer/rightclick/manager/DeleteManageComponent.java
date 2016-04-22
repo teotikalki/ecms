@@ -425,7 +425,6 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       uiExplorer.updateAjax(event);
       return;
     } catch (LockException lockException) {
-      LOG.error(lockException);
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-other-person", null,
           ApplicationMessage.WARNING));
 
