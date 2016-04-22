@@ -350,13 +350,13 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     try {
       uiExplorer.addLockToken(node);
     } catch (Exception e) {
+      e.printStackTrace();
       JCRExceptionManager.process(uiApp, e);
       return;
     }
     Node parentNode = node.getParent();
     uiExplorer.addLockToken(parentNode);
     try {
-
       // If node has taxonomy
       TaxonomyService taxonomyService = uiExplorer.getApplicationComponent(TaxonomyService.class);
       List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees();
@@ -398,12 +398,14 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       node.remove();
       parentNode.getSession().save();
     } catch (VersionException ve) {
+      ve.printStackTrace();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception", null,
           ApplicationMessage.WARNING));
 
       uiExplorer.updateAjax(event);
       return;
     } catch (ReferentialIntegrityException ref) {
+      ref.printStackTrace();
       session.refresh(false);
       uiExplorer.refreshExplorer();
       uiApp
@@ -414,6 +416,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       uiExplorer.updateAjax(event);
       return;
     } catch (ConstraintViolationException cons) {
+      cons.printStackTrace();
       session.refresh(false);
       uiExplorer.refreshExplorer();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception",
@@ -422,12 +425,14 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       uiExplorer.updateAjax(event);
       return;
     } catch (LockException lockException) {
+      lockException.printStackTrace();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-other-person", null,
           ApplicationMessage.WARNING));
 
       uiExplorer.updateAjax(event);
       return;
     } catch (Exception e) {
+      e.printStackTrace();
       if (LOG.isErrorEnabled()) {
         LOG.error("an unexpected error occurs while removing the node", e);
       }
