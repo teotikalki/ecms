@@ -599,8 +599,7 @@ public class UIPublicationPanel extends UIForm {
         currentNode.setProperty(StageAndVersionPublicationConstant.HISTORY, list.toArray(new Value[] {}));
         //save data and update ui
         currentNode.getSession().save();
-        WCMPublicationService  wcmPublicationService = (WCMPublicationService) PortalContainer.getComponent(WCMPublicationService.class);
-        wcmPublicationService.updateLifecyleOnChangeContent(currentNode, publicationPanel.sitename, publicationPanel.remoteuser);
+        publicationPanel.wcmPublicationService.updateLifecyleOnChangeContent(currentNode, publicationPanel.sitename, publicationPanel.remoteuser);
         publicationPanel.setCurrentRevision(currentNode);
         publicationPanel.updatePanel();
       } catch (Exception e) {
