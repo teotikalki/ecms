@@ -35,7 +35,6 @@ import javax.jcr.ValueFactory;
 import javax.jcr.version.Version;
 import javax.jcr.version.VersionIterator;
 
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.jcrext.activity.ActivityCommonService;
 import org.exoplatform.services.listener.ListenerService;
@@ -574,7 +573,7 @@ public class UIPublicationPanel extends UIForm {
           }
         }
         //set current state
-        currentNode.setProperty("publication:currentState", currentState);
+        currentNode.setProperty("publication:currentState", PublicationDefaultStates.DRAFT);
         //set revision data
         Map<String, VersionData> revisionsDataMap = publicationPanel.getRevisionData(currentNode);
         revisionsDataMap.get(currentNode.getUUID()).setState(PublicationDefaultStates.ENROLLED);
@@ -599,7 +598,6 @@ public class UIPublicationPanel extends UIForm {
         currentNode.setProperty(StageAndVersionPublicationConstant.HISTORY, list.toArray(new Value[] {}));
         //save data and update ui
         currentNode.getSession().save();
-        publicationPanel.wcmPublicationService.updateLifecyleOnChangeContent(currentNode, publicationPanel.sitename, publicationPanel.remoteuser);
         publicationPanel.setCurrentRevision(currentNode);
         publicationPanel.updatePanel();
       } catch (Exception e) {
