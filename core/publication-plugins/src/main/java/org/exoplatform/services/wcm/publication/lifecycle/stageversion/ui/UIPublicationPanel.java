@@ -576,7 +576,7 @@ public class UIPublicationPanel extends UIForm {
         currentNode.setProperty("publication:currentState", PublicationDefaultStates.DRAFT);
         //set revision data
         Map<String, VersionData> revisionsDataMap = publicationPanel.getRevisionData(currentNode);
-        revisionsDataMap.get(currentNode.getUUID()).setState(PublicationDefaultStates.ENROLLED);
+        revisionsDataMap.get(currentNode.getUUID()).setState(PublicationDefaultStates.DRAFT);
         List<Value> valueList = new ArrayList<Value>();
         ValueFactory factory = currentNode.getSession().getValueFactory();
         for(VersionData versionData: revisionsDataMap.values()) {
