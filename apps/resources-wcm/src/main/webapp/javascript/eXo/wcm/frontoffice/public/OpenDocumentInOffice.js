@@ -29,35 +29,27 @@
 
   var uiActionBarContainer="";
 
+OpenDocumentInOffice.prototype.errorCallback = function (message) {
+        var installerFilePath = "/Plugins/" + ITHit.WebDAV.Client.DocManager.GetInstallFileName();
+
+        if (confirm("Opening this type of file requires a protocol installation. Select OK to download the protocol installer.")){
+            window.open(installerFilePath);
+        }
+    }
+
   /**
    * Open document by Office application or desktop apps
    * absolutePath is webdav path of document. webdav server have to support level 2
    * workspace
    * filePath node path
    */
-  OpenDocumentInOffice.prototype.openDocument = function(absolutePath, workspace, filePath){
+  OpenDocumentInOffice.prototype.openDocument = function(filePath, mountPath){
     fitLayout();
     if(eXo.ecm.ECMWebDav !== undefined) { // use ITHIT to an open document
       eXo.ecm.ECMWebDav.WebDAV.Client.DocManager.ShowMicrosoftOfficeWarning();
       var documentManager = eXo.ecm.ECMWebDav.WebDAV.Client.DocManager;
       var openStatus = false;
-      if (documentManager.IsMicrosoftOfficeAvailable() && documentManager.IsMicrosoftOfficeDocument(absolutePath)) {
-        //if (!('ActiveXObject' in window) && !ITHit.DetectOS.MacOS) absolutePath += '\0'; only use for ITHit Ajax Lib 1.7.0 
-        openStatus = documentManager.MicrosoftOfficeEditDocument(absolutePath);
-        if(!openStatus){
-          openStatus = documentManager.JavaEditDocument(absolutePath, null, "/open-document/applet/ITHitMountOpenDocument.jar");
-        }
-      } else {
-        openStatus = documentManager.JavaEditDocument(absolutePath, null, "/open-document/applet/ITHitMountOpenDocument.jar");
-      }
-      //console.log("Open "+ absolutePath+" is "+openStatus);
-    } else {
-      //ITHIT not detected, Use ActiveX to edit document.
-      if(checkMSOfficeVersion()){
-        eXo.ecm.OpenDocumentInOffice.EditDocument(absolutePath);
-      }else{
-        //console.log("Cannot open. MSOffice version is not support!");
-      }
+      openStatus = documentManager.EditDocument(filePath, mountPath, OpenDocumentInOffice.errorCallback);
     }
     if(uisideBarWidth === 0){ //hide side bar
       gj("#UISideBar").show();
