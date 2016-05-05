@@ -1122,7 +1122,7 @@ public class Utils {
       uiOpenDocumentForm.setMessageKey("UIPopupMenu.msg.lock-node-read-only");
       uiOpenDocumentForm.setArguments(userLock);
       uiOpenDocumentForm.setFilePath(nodePath);
-      uiOpenDocumentForm.setWorkspace(ws);
+      uiOpenDocumentForm.setWorkspace(mountPath);
       uiOpenDocumentForm.setAbsolutePath(filePath);
       event.getRequestContext().getJavascriptManager().require("SHARED/openDocumentInOffice")
               .addScripts("eXo.ecm.OpenDocumentInOffice.showConfirmBox();");
