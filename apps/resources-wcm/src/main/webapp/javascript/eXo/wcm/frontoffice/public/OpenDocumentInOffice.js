@@ -30,7 +30,7 @@
   var uiActionBarContainer="";
 
 OpenDocumentInOffice.prototype.errorCallback = function (message) {
-        var installerFilePath = "/Plugins/" + ITHit.WebDAV.Client.DocManager.GetInstallFileName();
+        var installerFilePath = "/open-document/js/Plugins/" + ITHit.WebDAV.Client.DocManager.GetInstallFileName();
 
         if (confirm("Opening this type of file requires a protocol installation. Select OK to download the protocol installer.")){
             window.open(installerFilePath);
@@ -49,7 +49,8 @@ OpenDocumentInOffice.prototype.errorCallback = function (message) {
       eXo.ecm.ECMWebDav.WebDAV.Client.DocManager.ShowMicrosoftOfficeWarning();
       var documentManager = eXo.ecm.ECMWebDav.WebDAV.Client.DocManager;
       var openStatus = false;
-      openStatus = documentManager.EditDocument(filePath, mountPath, OpenDocumentInOffice.errorCallback);
+      var installerFileDir = "/open-document/js/Plugins/";
+      openStatus = documentManager.EditDocument(filePath, mountPath, installerFileDir, OpenDocumentInOffice.errorCallback);
     }
     if(uisideBarWidth === 0){ //hide side bar
       gj("#UISideBar").show();
