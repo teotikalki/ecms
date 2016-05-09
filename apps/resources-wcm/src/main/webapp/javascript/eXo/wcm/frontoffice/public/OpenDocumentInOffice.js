@@ -49,8 +49,7 @@ OpenDocumentInOffice.prototype.errorCallback = function (message) {
       eXo.ecm.ECMWebDav.WebDAV.Client.DocManager.ShowMicrosoftOfficeWarning();
       var documentManager = eXo.ecm.ECMWebDav.WebDAV.Client.DocManager;
       var openStatus = false;
-      var installerFileDir = "/open-document/js/Plugins/";
-      openStatus = documentManager.EditDocument(filePath, mountPath, installerFileDir, OpenDocumentInOffice.errorCallback);
+      openStatus = documentManager.EditDocument(filePath, mountPath, this.errorCallback);
     }
     if(uisideBarWidth === 0){ //hide side bar
       gj("#UISideBar").show();
