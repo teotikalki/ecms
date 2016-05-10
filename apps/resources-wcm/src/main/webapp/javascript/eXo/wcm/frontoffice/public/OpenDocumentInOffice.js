@@ -48,8 +48,7 @@ OpenDocumentInOffice.prototype.errorCallback = function (message) {
     if(eXo.ecm.ECMWebDav !== undefined) { // use ITHIT to an open document
       eXo.ecm.ECMWebDav.WebDAV.Client.DocManager.ShowMicrosoftOfficeWarning();
       var documentManager = eXo.ecm.ECMWebDav.WebDAV.Client.DocManager;
-      var openStatus = false;
-      openStatus = documentManager.EditDocument(filePath, mountPath, this.errorCallback);
+      documentManager.EditDocument(filePath, mountPath, this.errorCallback);
     }
     if(uisideBarWidth === 0){ //hide side bar
       gj("#UISideBar").show();
