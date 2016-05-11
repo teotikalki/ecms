@@ -44,7 +44,7 @@ public class UIOpenDocumentForm extends UIComponent implements UIPopupComponent 
       event.getRequestContext().addUIComponentToUpdateByAjax(popupAction);
 
       event.getRequestContext().getJavascriptManager().require("SHARED/openDocumentInOffice")
-              .addScripts("eXo.ecm.OpenDocumentInOffice.openDocument('" + uiConfirm.filePath + "', '" + uiConfirm.mountPath + "');");
+              .addScripts("eXo.ecm.OpenDocumentInOffice.openDocument('" + uiConfirm.absolutePath + "', '" + uiConfirm.mountPath + "');");
     }
   }
 
