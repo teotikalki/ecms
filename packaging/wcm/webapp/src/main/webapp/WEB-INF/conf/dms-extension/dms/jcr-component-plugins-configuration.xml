@@ -89,6 +89,13 @@
 	                  <field  name="actionClassName"><string>org.exoplatform.services.jcr.ext.audit.RemoveAuditableAction</string></field>
 	                </object>
 	              </value>
+				     <value>
+	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
+	                  <field  name="eventTypes"><string>addNode,removeNode</string></field>
+							<field  name="nodeTypes"><string>exo:action</string></field>
+	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.actions.impl.AddReferenceAction</string></field>
+	                </object>
+	             </value>
                 <value>
 	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
 	                  <field  name="eventTypes"><string>addProperty,changeProperty</string></field>	                  	                  

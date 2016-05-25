@@ -78,6 +78,15 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   private static final String         ACTION               = "exo:action";
 
   /**
+   * Define action Node REFERENCE
+   */
+  private static final String REFERENCES_NODE = "jcr:actionsReference";
+
+  private static final String REFERENCE_PROPERTY = "exo:actions";
+
+  private static final String SYSTEM_NODE = "jcr:system";
+
+  /**
    * Define nodetype JOB_NAME_PROP
    */
   private static final String         JOB_NAME_PROP        = "exo:jobName";
@@ -189,6 +198,9 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         plugin.importPredefinedActionsInJcr();
       }
       initiateActionConfiguration();
+      if (LOG.isInfoEnabled()) {
+        LOG.info("End " + this.getClass().getSimpleName());
+      }
     } catch (Exception e) {
       if (LOG.isErrorEnabled()) {
         LOG.error("Cannot start ActionServiceContainerImpl", e);
@@ -217,11 +229,11 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         LOG.error("Cannot initialize the ActionServiceContainerImpl", e);
       }
     }
-  }  
+  }
 
   /**
    * {@inheritDoc}
-   */  
+   */
   public Collection<String> getActionPluginNames() {
     Collection<String> actionPluginNames = new ArrayList<String>(actionPlugins.size());
     for (ComponentPlugin plugin : actionPlugins) {
@@ -232,7 +244,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   /**
    * {@inheritDoc}
-   */  
+   */
   public ActionPlugin getActionPlugin(String actionsServiceName) {
     for (ComponentPlugin plugin : actionPlugins) {
       if (plugin.getName().equals(actionsServiceName))
@@ -359,7 +371,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   /**
    * {@inheritDoc}
-   */  
+   */
   public ActionPlugin getActionPluginForActionType(String actionTypeName) {
     for (ComponentPlugin plugin : actionPlugins) {
       String actionServiceName = plugin.getName();
@@ -373,21 +385,21 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   /**
    * {@inheritDoc}
-   */  
+   */
   public Node getAction(Node node, String actionName) throws Exception {
     if (node.hasNode(EXO_ACTIONS + "/"+actionName)) {
       return node.getNode(EXO_ACTIONS + "/"+ actionName);
-    } 
-    return null;  
+    }
+    return null;
   }
-  
+
   /**
    * {@inheritDoc}
    */
   public boolean hasActions(Node node) throws Exception {
     return node.isNodeType(ACTIONABLE);
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -397,7 +409,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   /**
    * {@inheritDoc}
-   */  
+   */
   public List<Node> getCustomActionsNode(Node node, String lifecyclePhase) throws Exception {
     try {
       return getActions(node, lifecyclePhase) ;
@@ -438,7 +450,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       removeAction(node, action.getName(), repository);
     }
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -468,7 +480,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     action2Remove.remove();
     node.save();
   }
-  
+
   /**
    * {@inheritDoc}}
    */
@@ -511,7 +523,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       session.logout();
       throw e;
     }
-  }  
+  }
 
   /**
    * {@inheritDoc}
@@ -536,7 +548,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       }
     }
     addAction(storeActionNode, actionType, isDeep, uuid, nodeTypeName, mappings);
-  }  
+  }
 
   /**
    * Call addAction(Node node, String repository, String type, Map mappings) to
@@ -642,26 +654,11 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    */
   private void initiateActionConfiguration() throws Exception {
     ManageableRepository jcrRepository = null ;
-      jcrRepository = repositoryService_.getCurrentRepository();
-      String[] workspaces = jcrRepository.getWorkspaceNames();
-      for (String workspace : workspaces) {
-        Session session = jcrRepository.getSystemSession(workspace);
-        QueryManager queryManager = null;
-        try {
-          queryManager = session.getWorkspace().getQueryManager();
-        } catch (RepositoryException e) {
-          if (LOG.isWarnEnabled()) {
-            LOG.warn("ActionServiceContainer - Query Manager Factory of workspace "
-              + workspace + " not found. Check configuration.", e);
-          }
-        }
-        if (queryManager == null) {
-          session.logout();
-          continue;
-        }
-        initAction(queryManager, workspace) ;
-        session.logout();
-      }
+    jcrRepository = repositoryService_.getCurrentRepository();
+    String[] workspaces = jcrRepository.getWorkspaceNames();
+    for (String workspace : workspaces) {
+      initAction(workspace) ;
+    }
   }
 
   /**
@@ -672,38 +669,27 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   private void reInitiateActionConfiguration() throws Exception {
     ManageableRepository jcrRepository = repositoryService_.getCurrentRepository();
     for (String workspace : jcrRepository.getWorkspaceNames()) {
-      Session session = jcrRepository.getSystemSession(workspace);
-      QueryManager queryManager = null;
-      try {
-        queryManager = session.getWorkspace().getQueryManager();
-      } catch (RepositoryException e) {
-        if (LOG.isWarnEnabled()) {
-          LOG.warn("ActionServiceContainer - Query Manager Factory of workspace "
-            + workspace + " not found. Check configuration.", e);
-        }
-      }
-      if (queryManager == null)  {
-        session.logout();
-        continue;
-      }
-      initAction(queryManager, workspace) ;
-      session.logout();
+      initAction(workspace) ;
     }
   }
 
   /**
    * Initialize the action listener for all node in repository
    * All node is got by query following ACTION_QUERY
-   * @param queryManager QueryManager
    * @param workspace    workspace name
    * @throws Exception
    */
-  private void initAction(QueryManager queryManager, String workspace) throws Exception {
+  private void initAction(String workspace) throws Exception {
     try {
-      Query query = queryManager.createQuery(ACTION_QUERY, Query.XPATH);
-      QueryResult queryResult = query.execute();
-      for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
-        Node actionNode = iter.nextNode();
+      Session session = null;
+      //Get References Action
+      List<String> listActionUuid = getReferencesAction(workspace);
+      if(! listActionUuid.isEmpty())
+      {
+        session = repositoryService_.getCurrentRepository().getSystemSession(workspace);
+      }
+      for (String uuid : listActionUuid) {
+        Node actionNode = session.getNodeByUUID(uuid);
         String[] lifecyclePhase = parseValuesToArray(actionNode.getProperty(LIFECYCLE_PHASE_PROP)
             .getValues());
         String actionType = actionNode.getPrimaryNodeType().getName();
@@ -728,6 +714,48 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
           + workspace + " in current repository", e);
       }
     }
+  }
+
+  /**
+   * Get the list of created actions
+   * @return List of actions
+   * @throws Exception
+   */
+  private List<String>  getReferencesAction(String workspaceName) throws Exception
+  {
+    ManageableRepository jcrRepository = repositoryService_ .getCurrentRepository();
+    Node actionsNodeReference = null;
+    List<String> array = new ArrayList<String>();
+    actionsNodeReference =getReferenceActionHome(jcrRepository);
+    if(actionsNodeReference != null)
+    {
+      if (actionsNodeReference.hasNode(workspaceName))
+      {
+        Node result = actionsNodeReference.getNode(workspaceName);
+        if (result.hasProperty(REFERENCE_PROPERTY))
+        {
+          Value[] values = result.getProperty(REFERENCE_PROPERTY).getValues();
+          for(Value v: values)
+          {
+            array.add(v.getString());
+          }
+        }
+      }
+    }
+    return array;
+  }
+
+  public static Node getReferenceActionHome(ManageableRepository jcrRepository) throws Exception
+  {
+    Node systemFolder;
+    Node actionsNodeReference = null;
+    Session systemSession = jcrRepository.getSystemSession(jcrRepository.getConfiguration().getSystemWorkspaceName());
+    systemFolder = systemSession.getRootNode().getNode(SYSTEM_NODE);
+    if (systemFolder.hasNode(REFERENCES_NODE))
+    {
+      actionsNodeReference = systemFolder.getNode(REFERENCES_NODE);
+    }
+    return actionsNodeReference;
   }
 
   /**

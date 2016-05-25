@@ -145,6 +145,22 @@
         <valueConstraints/>	      
       </propertyDefinition>
     </propertyDefinitions>
-  </nodeType>  
+  </nodeType>
+
+  <nodeType name="exo:actionsReference" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>nt:base</supertype>
+    </supertypes>
+    <propertyDefinitions>
+      <propertyDefinition name="exo:actions" requiredType="String" autoCreated="false" mandatory="false"
+                          onParentVersion="COPY" protected="false" multiple="true">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:workspace" requiredType="String" autoCreated="false" mandatory="true"
+                          onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
   
 </nodeTypes>
