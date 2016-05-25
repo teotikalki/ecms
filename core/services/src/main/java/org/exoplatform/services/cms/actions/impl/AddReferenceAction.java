@@ -39,7 +39,7 @@ public class AddReferenceAction implements Action{
 
    private static final String REFERENCE_PROPERTY = "exo:actions";
 
-   private static final String REFERENCES_NODE = "jcr:actionsReference";
+   private static final String ACTIONS_REFERENCE = "exo:actionsReference";
 
    private final String WORKSPACE_PROPERTY = "exo:workspace";
 
@@ -49,39 +49,38 @@ public class AddReferenceAction implements Action{
       NodeImpl node = (NodeImpl)context.get("currentItem");
       int eventType = (int)context.get("event");
       ManageableRepository jcrRepository = (ManageableRepository) node.getSession().getRepository();
-      Session systemSession = jcrRepository.getSystemSession(jcrRepository.getConfiguration().getSystemWorkspaceName());
       Node actionHome = ActionServiceContainerImpl.getReferenceActionHome(jcrRepository);
       if(actionHome.hasNode(node.getSession().getWorkspace().getName()))      {
          actionNode = actionHome.getNode(node.getSession().getWorkspace().getName());
       }
       else      {
-         actionNode = actionHome.addNode(node.getSession().getWorkspace().getName(), REFERENCES_NODE);
+         actionNode = actionHome.addNode(node.getSession().getWorkspace().getName(), ACTIONS_REFERENCE);
          actionNode.setProperty(WORKSPACE_PROPERTY, node.getSession().getWorkspace().getName());
-         systemSession.save();
+         actionHome.save();
       }
       if(actionNode != null)      {
          switch (eventType)         {
-            case Event.NODE_ADDED : addReference(systemSession, actionNode, node);
+            case Event.NODE_ADDED : addReference(actionNode, node);
                break;
-            case Event.NODE_REMOVED : removeReference(systemSession, actionNode, node);
+            case Event.NODE_REMOVED : removeReference(actionNode, node);
             default : break;
          }
       }
       return false;
    }
 
-   private void addReference(Session session, Node actionNode, Node currentItem) throws RepositoryException   {
+   private void addReference(Node actionNode, Node currentItem) throws RepositoryException   {
       List<String> array = getValues(actionNode, currentItem);
       array.add(currentItem.getUUID());
       actionNode.setProperty(REFERENCE_PROPERTY, array.toArray(new String[0]));
-      session.save();
+      actionNode.save();
    }
 
-   private void removeReference(Session session, Node actionNode, Node currentItem) throws RepositoryException   {
+   private void removeReference(Node actionNode, Node currentItem) throws RepositoryException   {
       List<String> array = getValues(actionNode, currentItem);
       array.remove(currentItem.getUUID());
       actionNode.setProperty(REFERENCE_PROPERTY, array.toArray(new String[0]));
-      session.save();
+      actionNode.save();
    }
 
    private List<String> getValues(Node actionNode, Node currentItem) throws RepositoryException   {
@@ -89,7 +88,6 @@ public class AddReferenceAction implements Action{
 
       if(currentItem.canAddMixin(MIX_REFERENCEABLE))      {
          currentItem.addMixin(MIX_REFERENCEABLE);
-         currentItem.save();
       }
       if (actionNode.hasProperty(REFERENCE_PROPERTY))      {
          Value[] values = actionNode.getProperty(REFERENCE_PROPERTY).getValues();
