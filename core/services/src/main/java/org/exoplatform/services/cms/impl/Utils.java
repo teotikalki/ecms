@@ -657,7 +657,8 @@ public class Utils {
         }
         continue;
       }
-      if(i > 0 && !(Character.isLetterOrDigit(c) || c == '-' || c == '.' || c == '_')) {
+      if ((i > 0) && !(Character.isLetterOrDigit(c)) && ((c == '/') ||
+          (c == ':') || (c == '[') || (c == ']') || (c == '*') || (c == '\'') || (c == '"') || (c == '|'))) {
         cleanedStr.deleteCharAt(i--);
         continue;
       }
