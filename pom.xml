@@ -16,7 +16,6 @@
   <modules>
     <module>core</module>
     <module>apps</module>
-    <module>packaging</module>
     <module>ext</module>
     <module>upgrade-plugins</module>
     <module>testsuite</module>
@@ -266,18 +265,6 @@
         <groupId>org.exoplatform.ecms</groupId>
         <artifactId>ecms-ext-webui</artifactId>
         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.exoplatform.ecms</groupId>
-        <artifactId>ecms-packaging-wcm-webapp</artifactId>
-        <version>${project.version}</version>
-        <type>war</type>
-      </dependency>
-      <dependency>
-        <groupId>org.exoplatform.ecms</groupId>
-        <artifactId>ecms-packaging-wcm-webapp</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
       </dependency>
       <dependency>
         <groupId>org.exoplatform.ecms</groupId>

@@ -14,4 +14,39 @@
 	<import>war:/conf/wcm-core/ext-authoring-configuration.xml</import>
 	<import>war:/conf/wcm-core/ext-authoring-webui-configuration.xml</import>
 	<import>war:/conf/wcm-core/core-handler-configuration.xml</import>
+
+	<import>war:/conf/dms-extension/jcr/jcr-configuration.xml</import>
+	<import>war:/conf/dms-extension/common/resource-bundle-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/jcr-component-plugins-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-system-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/cms-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-templates-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-scripts-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-actions-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-taxonomies-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-ext-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-metadata-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-folksonomy-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-queries-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/organization-component-plugins-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/publication-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-thumbnail-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-common-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-document-type-configuration.xml</import>
+	<import>war:/conf/dms-extension/dms/dms-session-providers-configuration.xml</import>
+
+	<import>war:/conf/wcm-extension/kernel/schedule-configuration.xml</import>
+	<import>war:/conf/wcm-extension/portal/resource-bundle-configuration.xml</import>
+	<import>war:/conf/wcm-extension/dms/nodetype-templates-configuration.xml</import>
+	<import>war:/conf/wcm-extension/dms/application-templates-configuration.xml</import>
+	<import>war:/conf/wcm-extension/dms/ext-configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/system-configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/publication-configuration.xml</import>
+	<import>war:/conf/content-extended/authoring/configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/taxonomies-configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/metadata-configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/wcm-organization-configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/content-configuration.xml</import>
+	<import>war:/conf/wcm-extension/wcm/seo-configuration.xml</import>
+	<import profiles="friendly">war:/conf/content-extended/friendly/configuration.xml</import>
 </configuration>
