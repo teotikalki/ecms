@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+        xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
+
+  <external-component-plugins>
+    <target-component>org.exoplatform.portal.application.virtual.VirtualPortletAppService</target-component>
+    <component-plugin>
+      <name>addVirtualAppPlugin</name>
+      <set-method>addVirtualAppPlugin</set-method>
+      <type>org.exoplatform.portal.application.virtual.VirtualPortletAppPlugin</type>
+      <description>Add a virtual portlet app plugin</description>
+      <init-params>
+        <object-param>
+          <name>ecmadmin</name>
+          <description>description</description>
+          <object type="org.exoplatform.portal.application.virtual.VirtualApplication">
+            <field name="virtual">
+              <string>ecmadmin</string>
+            </field>
+            <field name="real">
+              <string>ecms-portlets</string>
+            </field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>ecmexplorer</name>
+          <description>description</description>
+          <object type="org.exoplatform.portal.application.virtual.VirtualApplication">
+            <field name="virtual">
+              <string>ecmexplorer</string>
+            </field>
+            <field name="real">
+              <string>ecms-portlets</string>
+            </field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>presentation</name>
+          <description>description</description>
+          <object type="org.exoplatform.portal.application.virtual.VirtualApplication">
+            <field name="virtual">
+              <string>presentation</string>
+            </field>
+            <field name="real">
+              <string>ecms-portlets</string>
+            </field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>searches</name>
+          <description>description</description>
+          <object type="org.exoplatform.portal.application.virtual.VirtualApplication">
+            <field name="virtual">
+              <string>searches</string>
+            </field>
+            <field name="real">
+              <string>ecms-portlets</string>
+            </field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>seo</name>
+          <description>description</description>
+          <object type="org.exoplatform.portal.application.virtual.VirtualApplication">
+            <field name="virtual">
+              <string>seo</string>
+            </field>
+            <field name="real">
+              <string>ecms-portlets</string>
+            </field>
+          </object>
+        </object-param>
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>
+
+</configuration>

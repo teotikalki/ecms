@@ -11,11 +11,7 @@
   <name>eXo ECM Suite :: Apps</name>
   <description>eXo Entreprise Content Management Suite :: Applications</description>
   <modules>
-    <module>portlet-administration</module>
-    <module>portlet-explorer</module>
-    <module>portlet-presentation</module>
-    <module>portlet-search</module>
+    <module>portlets</module>
     <module>resources-wcm</module>
-    <module>portlet-seo</module>
   </modules>
 </project>

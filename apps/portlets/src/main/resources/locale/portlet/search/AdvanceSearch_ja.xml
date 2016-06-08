@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <UIDefaultSearchForm>
+    <label>
+      <keyword>キーワード</keyword>
+      <portal>ポータル</portal>
+      <Page>ページ</Page>
+      <Document>ドキュメント</Document>
+    </label>
+    <action>
+      <Search>検索</Search>
+    </action>
+  </UIDefaultSearchForm>
+
+  <UIDefaultSearchResult>
+    <label>
+      <Page>ページ</Page>
+      <Document>ドキュメント</Document>
+      <DocumentAndPage>ドキュメントとページ</DocumentAndPage>
+      <documentandpage>ドキュメントとページ</documentandpage>
+      <results>Results {0} to {1} for {2}</results>
+      <oneResult>Only one result for {0}</oneResult>
+      <ofAboutCaption>について</ofAboutCaption>
+      <timeUnitCaption>秒</timeUnitCaption>
+      <similar>同じコンテンツが表示されるページ</similar>
+      <editor>編集者</editor>
+      <date>日時</date>
+      <relevancy>関連性</relevancy>
+      <title>タイトル</title>
+      <sortBy>並べ替え:</sortBy>
+    </label>
+    <action>
+      <edit>編集</edit>
+    </action>
+    <msg>
+      <search-not-match-type>Your search {0} does not match any {1}.</search-not-match-type>
+    </msg>
+  </UIDefaultSearchResult>
+  <UISearchPageLayoutManager>
+    <label>
+      <itemsPerPageSelector>ページ毎アイテム数</itemsPerPageSelector>
+      <searchFormSelector>検索フォームテンプレート</searchFormSelector>
+      <searchResultSelector>検索結果テンプレート</searchResultSelector>
+      <searchPaginatorSelector>検索改ページテンプレート</searchPaginatorSelector>
+      <searchPageLayoutSelector>検索ページレイアウトテンプレート</searchPageLayoutSelector>
+      <searchResultBasePathInputSetAction>ベースパス</searchResultBasePathInputSetAction>
+      <pageMode>ページ モード</pageMode>
+      <option>
+        <none>無し</none>
+        <more>もっと</more>
+        <pagination>改ページ</pagination>
+      </option>
+    </label>
+    <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+  </UISearchPageLayoutManager>
+  <searchResultBasePathInputSetAction>
+    <title>
+      <SelectBasePath>ベースパスを選択</SelectBasePath>
+    </title>
+  </searchResultBasePathInputSetAction>  
+  <UISearchForm>  
+   <message>
+     <keyword-not-support>検索キーワードが有効できはありません。文字列が認識されていません。</keyword-not-support>
+     <not-checked>検索タイプを選択してください。</not-checked>
+     <keyword-not-empty>検索キーワードを入力してください。</keyword-not-empty>
+   </message>
+  </UISearchForm>
+  <UIPaginatorDefault>
+    <label>
+      <next>次へ</next>
+      <previous>戻る</previous>
+      <more>もっと</more>
+    </label>
+  </UIPaginatorDefault>
+  <UISearchPageLayoutDefault>
+    <label>
+      <quickEditTitle>クイック編集</quickEditTitle>
+    </label>
+  </UISearchPageLayoutDefault>
+  <searchOption>
+    <label>
+      <pageCheckBox>ページに</pageCheckBox>
+      <documentCheckBox>コンテンツに</documentCheckBox>
+    </label>
+  </searchOption>
+  <ViewMode>
+    <label>
+      <option>
+        <all>すべてのサイトを検索する。</all>
+      </option>  
+    </label>  
+  </ViewMode>
+</bundle>

@@ -1,0 +1,99 @@
+<%
+	import org.exoplatform.services.document.diff.Delta ;
+	def rcontext = _ctx.getRequestContext() ;
+	def jm = rcontext.getJavascriptManager();
+%>
+<div class="uiDiff uiBox noRounded">	
+			<h6 class="title"><%=_ctx.appRes("UIDiff.label.diffTitle")%></h6>
+			<div class="uiContentBox">
+				<%
+					def arr = uicomponent.getDeltas() ;					
+					if(!uicomponent.isCompareable()) {											
+				%>
+				<div class="contentDetail">						
+					<label><%=_ctx.appRes("UIDiff.label.can-not-compare")%></label>						
+				</div>	
+				<%
+					} else {										
+					if(arr.isEmpty()) {
+				%>
+					<div class="contentDetail">	
+						<div  class="contentEmpty">					
+							<label> <%=_ctx.appRes("UIDiff.label.noChange")%> </label>	
+						</div>					
+					</div>	
+					<%
+						} else {
+					%>
+						<table class="uiGrid table table-hover table-striped">
+							<thead>
+						    <tr>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
+						      	<%=uicomponent.getCurrentVersionNum()%>,
+						      	<%=uicomponent.getCurrentVersionDate()%>
+						      </th>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
+						      	<%=uicomponent.getBaseVersionNum()%>,
+						      	<%=uicomponent.getBaseVersionDate()%>
+						      </th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						  <%  
+						    def i=1;
+						  	for(Delta delta in uicomponent.getDeltas()){		    		
+						  	  //jm.require("SHARED/ecm-utils", "ecmutil").addScripts("ecmutil.ECMUtils.insertContentToIframe('$i');") ;
+			    		%>		    		
+		    			<tr onload="eXo.ecm.ECMUtils.insertContentToIframe('$i') ;"> 
+		    				<% 
+		    					if (uicomponent.isDeleteDelta(delta)) {
+		    				%>	   
+		    				<td class="diffDelete">
+		    				  <div id="original${i}" scrolling = "auto" style="border: 0px; height: 60px; width: 100%;overflow :auto; " content="<%=delta.getOriginal().toString()%>">
+		    				    <%=delta.getOriginal().toString()%>
+		    				  </div>
+		    				</td>	 				
+		    				<td class="diffEmpty">
+		    				  <div id="revised${i}" scrolling = "auto" style="border: 0px; height: 60px; width: 100%;overflow :auto;" content="<%=delta.getRevised().toString()%>">
+		    				    <%=delta.getRevised().toString()%>
+		    				  </div>
+		    				</td>	
+		    				<% 
+		    					} else if(uicomponent.isAddDelta(delta)) { 
+		    				%>
+		    				<td class="diffEmpty">
+		    				  <div id="original${i}" scrolling = "auto" style="border: 0px; height: 60px; width: 100%;overflow :auto;" content="<%=delta.getOriginal().toString()%>">
+		    				    <%=delta.getOriginal().toString()%>
+		    				  </div>
+		    				</td>
+		    				<td class="diffAdd">
+		    				  <div id="revised${i}" scrolling = "auto" style="border: 0px; height: 60px; width: 100%;overflow :auto;" content="<%=delta.getRevised().toString()%>">
+		    				    <%=delta.getRevised().toString()%>
+		    				  </div>
+		    				</td>	
+		    				<% 
+		    					} else {	    		
+		    				%>
+		    				<td class="diffModify">
+		    				  <div id="original${i}" scrolling = "auto" style="border: 0px; height: 60px; width: 100%;overflow :auto;" content="<%=delta.getOriginal().toString()%>">
+		    				    <%=delta.getOriginal().toString()%>
+		    				  </div>
+		    			  </td>	
+		    				<td class="diffModify">
+		    				  <div id="revised${i}" scrolling = "auto" style="border: 0px; height: 60px; width: 100%;overflow :auto;" content="<%=delta.getRevised().toString()%>">
+		    				    <%=delta.getRevised().toString()%>
+		    				  </div>
+		    				</td>
+		    				<% } %>	    				
+		    			</tr>
+		    			<% 
+						i++;		    			
+		    			  } 
+		    			%>
+						</tbody>						
+						</table>
+					<% } } %>			    	
+			</div>
+</div>
