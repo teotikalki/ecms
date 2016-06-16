@@ -2432,7 +2432,7 @@
   <UIRestoreConfirmMessage>
     <label>
       <Close>#{word.close}</Close>
-      <OK>Ok</OK>
+      <OK>OK</OK>
       <ReplaceData>Substituir dado</ReplaceData>
       <Back>Voltar para renomear</Back>
       <Keepfile>Manter ambos arquivos</Keepfile>
