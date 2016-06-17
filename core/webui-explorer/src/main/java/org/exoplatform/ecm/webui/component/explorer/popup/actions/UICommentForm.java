@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import javax.jcr.Node;
 
+import org.exoplatform.commons.utils.HTMLSanitizer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -170,7 +171,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
       UICommentForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       String comment = uiForm.getChild(UIFormRichtextInput.class).getValue() ;
-      comment = StringCommonUtils.encodeScriptMarkup(comment);
+      comment = HTMLSanitizer.sanitize(comment);
       CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ;
       if(comment == null || comment.trim().length() == 0) {
         throw new MessageException(new ApplicationMessage("UICommentForm.msg.content-null", null, ApplicationMessage.WARNING)) ;

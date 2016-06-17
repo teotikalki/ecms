@@ -16,13 +16,13 @@
  */
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
+import org.exoplatform.commons.utils.HTMLSanitizer;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.groovyscript.text.TemplateService;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.services.deployment.Utils;
 import org.exoplatform.wcm.webui.form.UIFormInputSetWithNoLabel;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -124,7 +124,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelectable {
       if(viewTemplate == null) viewTemplate = "" ;
       if(!metadataService.hasMetadata(uiForm.metadataName_)) uiForm.isAddNew_ = true ;
       else uiForm.isAddNew_ = false ;
-      String metaLabel = Utils.sanitize(uiForm.getUIStringInput(METADATA_LABEL).getValue());
+      String metaLabel = HTMLSanitizer.sanitize(uiForm.getUIStringInput(METADATA_LABEL).getValue());
       JCRResourceResolver resourceResolver = new JCRResourceResolver(uiForm.workspaceName_);
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       String path = metadataService.addMetadata(uiForm.metadataName_,

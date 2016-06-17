@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.form.validator;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.commons.utils.HTMLSanitizer;
 import org.exoplatform.services.deployment.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.exception.MessageException;
@@ -38,7 +39,7 @@ public class XSSValidator implements Validator {
       return;
     }
     
-    inputValue = Utils.sanitize(inputValue);
+    inputValue = HTMLSanitizer.sanitize(inputValue);
     if (StringUtils.isEmpty(inputValue)) {
       String message = "UIActionForm.msg.xss-vulnerability-character";
       if(uiInput.getLabel() == null) message = "UIActionForm.msg.xss-vulnerability-character-wo-label";

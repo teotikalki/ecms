@@ -31,6 +31,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
 
+import org.exoplatform.commons.utils.HTMLSanitizer;
 import org.exoplatform.commons.utils.IOUtil;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
@@ -202,7 +203,7 @@ public class DialogFormUtil {
               String inputValue = input.getValue().toString().trim();
               boolean isEmpty = Utils.isEmptyContent(inputValue);
               if(isEmpty) inputValue = "";
-              else if(option == null || option.indexOf(SANITIZATION_FLAG) < 0) inputValue = org.exoplatform.services.deployment.Utils.sanitize(inputValue);
+              else if(option == null || option.indexOf(SANITIZATION_FLAG) < 0) inputValue = HTMLSanitizer.sanitize(inputValue);
               if (input.getName().equals("name") && input.getAncestorOfType(UIDialogForm.class).isAddNew()) {
                 JcrInputProperty jcrExoTitle = new JcrInputProperty();
                 jcrExoTitle.setJcrPath("/node/exo:title");

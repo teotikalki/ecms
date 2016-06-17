@@ -47,6 +47,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.commons.utils.HTMLSanitizer;
 import org.exoplatform.commons.utils.StringCommonUtils;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -739,7 +740,7 @@ public class Utils {
         String propertyValue;
         if(propertyName.equals(JCR_CONTENT_DESCRIPTION)){
            propertyValue = orgNode.getProperty(propertyName).getValues()[0].getString();
-           return StringCommonUtils.encodeScriptMarkup(org.exoplatform.services.deployment.Utils.sanitize(propertyValue));
+           return HTMLSanitizer.sanitize(propertyValue);
         }
         if (orgNode.getProperty(propertyName).getDefinition().isMultiple()) {
           //The requested property is multiple-valued, inline editing enable users to edit the first value of property        
