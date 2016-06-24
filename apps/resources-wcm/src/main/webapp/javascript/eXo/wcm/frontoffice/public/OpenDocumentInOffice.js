@@ -29,13 +29,10 @@
 
   var uiActionBarContainer="";
 
-OpenDocumentInOffice.prototype.errorCallback = function (message) {
-        var installerFilePath = "/open-document/js/Plugins/" + ITHit.WebDAV.Client.DocManager.GetInstallFileName();
-
-        if (confirm("Opening this type of file requires a protocol installation. Select OK to download the protocol installer.")){
-            window.open(installerFilePath);
-        }
-    }
+  OpenDocumentInOffice.prototype.errorCallback = function (message) {
+    var installerFilePath = "/open-document/js/Plugins/" + ITHit.WebDAV.Client.DocManager.GetInstallFileName();
+    window.open(installerFilePath);
+  }
 
   /**
    * Open document by Office application or desktop apps
