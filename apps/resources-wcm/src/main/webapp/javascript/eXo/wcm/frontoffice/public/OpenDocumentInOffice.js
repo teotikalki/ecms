@@ -43,7 +43,6 @@
   OpenDocumentInOffice.prototype.openDocument = function(filePath, mountPath){
     fitLayout();
     if(eXo.ecm.ECMWebDav !== undefined) { // use ITHIT to an open document
-      eXo.ecm.ECMWebDav.WebDAV.Client.DocManager.ShowMicrosoftOfficeWarning();
       var documentManager = eXo.ecm.ECMWebDav.WebDAV.Client.DocManager;
       documentManager.EditDocument(filePath, mountPath, this.errorCallback);
     }
